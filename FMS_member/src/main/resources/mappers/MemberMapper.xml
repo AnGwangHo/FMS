@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- :: 루트 엘리먼트이름 -->
+                        
+<!-- 네임스페이스(사용영역) 설정 -->
+<mapper namespace="com.cz.fms.member">	
+	<!--  로그인처리  -->
+	<select id="login" resultType="Member">
+	select member_id, member_passwd from Member where member_id = #{member_id} and member_passwd = #{member_passwd}
+	</select>
+	<!-- 회원 등록 -->
+	<insert id="memberadd">
+		INSERT INTO member 
+	            (member_num, 
+	             member_mainposition, 
+	             member_subposition, 
+	             member_id, 
+	             member_passwd, 
+	             member_name, 
+	             member_profile_image, 
+	             member_age, 
+	             member_sex, 
+	             member_height, 
+	             member_weight, 
+	             member_foot, 
+	             member_phone, 
+	             member_email, 
+	             member_addr, 
+	             member_detailaddr, 
+	             member_comment) 
+	VALUES     (member_num_seq.nextval, 
+	            #{member_mainposition}, 
+	            #{member_subposition}, 
+	            #{member_id}, 
+	            #{member_passwd}, 
+	            #{member_name}, 
+	            #{member_profile_image}, 
+	            #{member_age}, 
+	            #{member_sex}, 
+	            #{member_height}, 
+	            #{member_weight}, 
+	            #{member_foot}, 
+	            #{member_phone}, 
+	            #{member_email}, 
+	            #{member_addr},
+	            #{member_detailaddr}, 
+	            #{member_comment}) 
+	</insert>
+	<!-- 회원 아이디로 검색 -->
+	<select id="getmember_id" resultType="com.cz.fms.member.domain.Member">
+	select *
+	from member
+	where member_id =#{member_id}
+	</select>
+	<delete id="leaveMember">
+		DELETE FROM member 
+		WHERE  member_num = #{member_num} 
+	</delete>
+	<select id="MemberMypage" resultType="com.cz.fms.member.domain.Member">
+		SELECT * 
+		FROM   member 
+		WHERE  member_id = #{member_id} 
+	</select>
+	<update id="Membermodify" parameterType="com.cz.fms.member.domain.Member">
+      UPDATE member
+      SET	   member_mainposition = #{member_mainposition}, 
+               member_subposition = #{member_subposition},
+               member_foot = #{member_foot},
+               member_phone = #{member_phone},
+               member_email = #{member_email},
+               member_addr = #{member_addr},
+               member_detailaddr = #{member_detailaddr},
+               member_comment = #{member_comment}
+      WHERE    member_num = #{member_num}
+   </update>
+   <select id="memberlist" resultType="com.cz.fms.member.domain.Member">
+		 <![CDATA[
+			SELECT *
+			FROM   member 
+			WHERE  member_num > 0 
+			ORDER  BY member_num DESC
+		 ]]>
+	</select>
+</mapper>

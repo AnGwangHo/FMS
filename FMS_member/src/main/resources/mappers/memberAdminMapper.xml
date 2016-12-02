@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- :: 루트 엘리먼트이름 -->
+
+<mapper namespace="com.cz.fms.member">
+
+	<update id="updateMember">
+		UPDATE TABLE member
+		SET    bulletin_title = #{bulletin_title}, 
+      		   bulletin_content = #{bulletin_content} 
+		WHERE  member_num = #{member_num} 
+	</update>
+
+	<delete id="deleteMember">
+		DELETE FROM member 
+		WHERE  member_num = #{member_num} 
+	</delete> 
+
+	<select id="readMember" resultType="com.cz.fms.member.domain.MemberAdmin">
+		SELECT * 
+		FROM   member 
+		WHERE  member_num = #{member_num} 
+	</select>
+
+
+	<select id="memberlistAll" resultType="com.cz.fms.member.domain.MemberAdmin">
+		 <![CDATA[
+			SELECT *
+			FROM   member 
+			WHERE  member_num > 0 
+			ORDER  BY member_num DESC, 
+			          member_regdate DESC 
+		 ]]>
+	</select>
+	
+
+ 	<select id="memberlistPage" resultType="com.cz.fms.member.domain.MemberAdmin">
+		 <![CDATA[
+			SELECT * 
+			FROM   (SELECT Ceil(rownum / 10) page, 
+			               member_num, 
+			               member_id, 
+			               member_name, 
+			               member_phone, 
+			               member_regdate
+			        FROM   member
+			        ORDER  BY member_num DESC) 
+			WHERE  page = #{perPageNum} 
+			ORDER  BY member_num DESC 
+		 ]]>  
+ 	</select>
+ 	
+ 	<select id="memberlistCriteria" parameterType="com.cz.fms.member.domain.Criteria" resultType="com.cz.fms.member.domain.MemberAdmin">
+		      SELECT *
+		      FROM   (SELECT CEIL(rownum / #{perPageNum}) request_page, 
+		                   member_num, 
+			               member_id, 
+			               member_name, 
+			               member_phone, 
+			               member_regdate
+		              FROM   (SELECT   member_num, 
+						               member_id, 
+						               member_name, 
+						               member_phone, 
+						               member_regdate
+		                      FROM   member 
+		                      ORDER BY member_num DESC,
+		                               member_regdate DESC)) 
+		      WHERE  request_page = #{pageStart}
+ 	 	</select>
+	 	
+	 
+	 
+	 <select id="countPaging" resultType="int">
+		 <![CDATA[
+			 select count(member_num) 
+			 from   member 
+		 ]]>
+	 </select>
+
+
+ 	<sql id="search">
+		<where>
+			<if test="searchType != null">
+				<choose>
+					<when test="searchType == 't'.toString()">
+						member_name like #{keyword}
+					</when>
+					<when test="searchType == 'c'.toString()">
+						member_id like #{keyword}
+					</when>
+					<when test="searchType == 'w'.toString()">
+						member_name like #{keyword}
+					</when>
+					<when test="searchType == 'tc'.toString()">
+						member_name like #{keyword} OR member_id like #{keyword}
+					</when>
+					<when test="searchType == 'cw'.toString()">
+						member_name like #{keyword} OR member_name like #{keyword}
+					</when>
+					<when test="searchType == 'tcw'.toString()">
+						member_name like #{keyword} OR member_name like #{keyword} OR member_name like
+						#{keyword}
+					</when>
+				</choose>
+			</if>
+		</where>
+	</sql>
+
+	
+	<select id="listSearch" resultType="com.cz.fms.member.domain.MemberAdmin">
+		 	 SELECT    member_num, 
+		               member_id, 
+		               member_name, 
+		               member_phone, 
+		               member_regdate
+		      FROM   (SELECT CEIL(rownum / #{perPageNum}) request_page, 
+			                   member_num, 
+				               member_id, 
+				               member_name, 
+				               member_phone, 
+				               member_regdate
+		              FROM   (SELECT   member_num, 
+						               member_id, 
+						               member_name, 
+						               member_phone, 
+						               member_regdate
+		                      FROM   member
+		                      <include refid="search" />
+		                      ORDER BY member_num DESC,
+		                               member_regdate DESC)) 
+		      WHERE  request_page = #{pageStart}
+	</select>
+
+
+	 <select id="listSearchCount" resultType="int">
+		  select count(member_num) 
+		  from member 
+	    <include refid="search" />   
+	 </select>   
+</mapper>
