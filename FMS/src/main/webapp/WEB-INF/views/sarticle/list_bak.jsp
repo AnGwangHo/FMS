@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE HTML>
@@ -71,7 +70,7 @@
           <tr style="color:white">
             <td>${bulletin.bulletin_num}</td>
             <td>${bulletin.bulletintype_num }</td>
-            <td><a href='read?bulletin_num=${bulletin.bulletin_num}'>${bulletin.bulletin_title}</a></td>
+            <td><a href='/sarticle/readPage${pageMaker.makeSearch(pageMaker.cri.page) }&bulletin_num=${bulletin.bulletin_num}'>${bulletin.bulletin_title}</a></td>
             <td>${bulletin.member_num}</td>
             <td><fmt:formatDate pattern="yyyy-MM-dd" value="${bulletin.bulletin_date}" /></td>
             <td><span class="badge bg-red">${bulletin.bulletin_hitcount }</span></td>
@@ -79,9 +78,65 @@
          </c:forEach>
              
        </table>
-      
+       <!-- 페이지 -->
+       <div class="box-footer">
+
+					<div class="text-center">
+						<ul class="pagination">
+
+							<c:if test="${pageMaker.prev}">
+								<li><a href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}">&laquo;</a></li>
+							</c:if>
+
+							<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="idx">
+								<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+									<a href="list${pageMaker.makeSearch(idx)}">${idx}</a>
+								</li>
+							</c:forEach>
+
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<li><a href="list${pageMaker.makeSearch(pageMaker.endPage +1)}">&raquo;</a></li>
+							</c:if>
+
+						</ul>
+					</div>
+		</div>
+		<!-- /.box-footer-->
+		
+		<!-- 검색부분 -->
+		<div class='box-body'>
+
+		<select name="searchType">
+			<option value="n"
+				<c:out value="${cri.searchType == null?'selected':''}"/>>
+				---</option>
+			<option value="t"
+				<c:out value="${cri.searchType eq 't'?'selected':''}"/>>
+				Title</option>
+			<option value="c"
+				<c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
+				Content</option>
+			<option value="w"
+				<c:out value="${cri.searchType eq 'w'?'selected':''}"/>>
+				Writer</option>
+			<option value="tc"
+				<c:out value="${cri.searchType eq 'tc'?'selected':''}"/>>
+				Title OR Content</option>
+			<option value="cw"
+				<c:out value="${cri.searchType eq 'cw'?'selected':''}"/>>
+				Content OR Writer</option>
+			<option value="tcw"
+				<c:out value="${cri.searchType eq 'tcw'?'selected':''}"/>>
+				Title OR Content OR Writer</option>
+		</select> 
+		<input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
+		<button id='searchBtn'>Search</button>
+		<!-- <button id='newBtn'>New Board</button> -->
+	
+	 </div>
+	 
       <div align="left" style="margin-right: 10px">
-         <button onclick="javascript:location.href='write'" class="btn btn-default  btn3d">
+         <button class="btn btn-default  btn3d" id="newBtn">
             <span class="glyphicon glyphicon-pencil"></span> 글 작성
          </button>
       </div>
@@ -95,6 +150,11 @@
  </main>
   <jsp:include page="../include/footer.jsp"/>
  
+ 
+<form id="jobForm">
+  <input type='hidden' name="page" value="${pageMaker.cri.perPageNum}">
+  <input type='hidden' name="perPageNum" value="${pageMaker.cri.perPageNum}">
+</form> 
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
@@ -120,7 +180,7 @@
 
 <!-- jquery.countdown --> 
 
-<script src="/html/js/countdown-js.js" type="text/javascript"></script> 
+<!-- <script src="/html/js/countdown-js.js" type="text/javascript"></script> --> 
 <script type="text/javascript" src="/html/js/jquery.contact.js"></script> 
 
 <!-- slider --> 
@@ -135,6 +195,24 @@
 <script src="/html/js/typed.js" type="text/javascript"></script> 
 <script>
     $(function(){
+    	
+    	var result = '${msg}';
+
+    	if (result == 'SUCCESS') {
+    		alert("처리가 완료되었습니다.");
+    	}
+    	
+    	/* $(".pagination li a").on("click", function(event){
+    		
+    		event.preventDefault(); 
+    		
+    		var targetPage = $(this).attr("href");
+    		
+    		var jobForm = $("#jobForm");
+    		jobForm.find("[name='page']").val(targetPage);
+    		jobForm.attr("action","/article/listPage").attr("method", "get");
+    		jobForm.submit();
+    	}); */
 
         $("#typed").typed({
             // strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
@@ -160,5 +238,29 @@
     function foo(){ console.log("Callback"); }
 
     </script>
+    <script>
+	$(document).ready(
+			function() {
+
+				$('#searchBtn').on(
+						"click",
+						function(event) {
+
+							self.location = "list"
+									+ '${pageMaker.makeQuery(1)}'
+									+ "&searchType="
+									+ $("select option:selected").val()
+									+ "&keyword=" + $('#keywordInput').val();
+
+						});
+
+				$('#newBtn').on("click", function(evt) {
+
+					self.location = "write";
+
+				});
+
+			});
+</script>
 </body>
 </html>

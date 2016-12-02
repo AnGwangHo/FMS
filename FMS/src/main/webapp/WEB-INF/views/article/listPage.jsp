@@ -71,7 +71,7 @@
           <tr style="color:white">
             <td>${bulletin.bulletin_num}</td>
             <td>${bulletin.bulletintype_num }</td>
-            <td><a href='read?bulletin_num=${bulletin.bulletin_num}'>${bulletin.bulletin_title}</a></td>
+            <td><a href='/article/readPage${pageMaker.makeQuery(pageMaker.cri.page) }&bulletin_num=${bulletin.bulletin_num}'>${bulletin.bulletin_title}</a></td>
             <td>${bulletin.member_num}</td>
             <td><fmt:formatDate pattern="yyyy-MM-dd" value="${bulletin.bulletin_date}" /></td>
             <td><span class="badge bg-red">${bulletin.bulletin_hitcount }</span></td>
@@ -79,6 +79,36 @@
          </c:forEach>
              
        </table>
+       
+       <div class="box-footer">
+
+					<div class="text-center">
+						<ul class="pagination">
+
+							<c:if test="${pageMaker.prev}">
+								<li><a href="${pageMaker.startPage - 1}">&laquo;</a></li>
+							</c:if>
+
+							<c:forEach begin="${pageMaker.startPage }"
+								end="${pageMaker.endPage }" var="idx">
+								<li
+									<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+									<a href="${idx}">${idx}</a>
+								</li>
+							</c:forEach>
+
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<li><a
+									href="${pageMaker.endPage +1}">&raquo;</a></li>
+							</c:if>
+
+						</ul>
+					</div>
+
+
+		</div>
+		<!-- /.box-footer-->
+       
       
       <div align="left" style="margin-right: 10px">
          <button onclick="javascript:location.href='write'" class="btn btn-default  btn3d">
@@ -95,7 +125,10 @@
  </main>
   <jsp:include page="../include/footer.jsp"/>
  
-
+<form id="jobForm">
+  <input type='hidden' name="page" value=${pageMaker.cri.perPageNum}>
+  <input type='hidden' name="perPageNum" value=${pageMaker.cri.perPageNum}>
+</form>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 
@@ -135,6 +168,24 @@
 <script src="/html/js/typed.js" type="text/javascript"></script> 
 <script>
     $(function(){
+    	
+    	var result = '${msg}';
+
+    	if (result == 'SUCCESS') {
+    		alert("처리가 완료되었습니다.");
+    	}
+    	
+    	$(".pagination li a").on("click", function(event){
+    		
+    		event.preventDefault(); 
+    		
+    		var targetPage = $(this).attr("href");
+    		
+    		var jobForm = $("#jobForm");
+    		jobForm.find("[name='page']").val(targetPage);
+    		jobForm.attr("action","/article/listPage").attr("method", "get");
+    		jobForm.submit();
+    	});
 
         $("#typed").typed({
             // strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],

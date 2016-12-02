@@ -116,7 +116,7 @@
             
             <div class="subscribe-pan">
               <div class="ntify_form">
-                <form method="post" action="/schedule" name="subscribeform" id="subscribeform">
+                <form method="post" action="php/subscribe.php" name="subscribeform" id="subscribeform">
                   <input name="email" type="email" id="subemail" placeholder="Enter Your Email...">
                   <label>
                     <input name="" type="submit" class="button-icon">

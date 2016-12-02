@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<mapper namespace="com.cz.fms.article">
+	
+	<!-- 게시글 등록 -->
+	<insert id="create" parameterType="com.cz.fms.article.domain.Bulletin">
+	   <!--  
+	   insert into bulletin (bulletin_num,bulletintype_num, member_num ,bulletin_title, bulletin_content, reply_count)
+              values (bulletin_num_seq.nextval,#{bulletintype_num},2,#{bulletin_title},#{bulletin_content},#{reply_count}) 
+       -->
+        INSERT INTO bulletin  (bulletin_num, 
+            						  bulletintype_num, 
+             						  member_num, 
+             						  bulletin_title, 
+             						  bulletin_content, 
+             						  reply_count) 
+		VALUES                   (bulletin_num_seq.nextval, 
+             						  #{bulletintype_num}, 
+             						  2, 
+             						  #{bulletin_title}, 
+             						  #{bulletin_content}, 
+             						  #{reply_count}) 
+	</insert>
+	
+	<!-- 게시글 조회 -->
+	<select id="read" resultType="com.cz.fms.article.domain.Bulletin">
+	   SELECT *
+	   FROM bulletin
+	   WHERE bulletin_num = #{bulletin_num}
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="update" parameterType="com.cz.fms.article.domain.Bulletin">
+	  <!-- 
+	  update bulletin
+	  set bulletin_title=#{bulletin_title},bulletin_content=#{bulletin_content}
+	  where bulletin_num=#{bulletin_num} 
+	  -->
+	  
+	  UPDATE bulletin 
+	  SET    bulletin_title = #{bulletin_title}, 
+       	 	    bulletin_content = #{bulletin_content} 
+	  WHERE  bulletin_num = #{bulletin_num} 
+	</update> 
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+	  <!-- delete from bulletin where bulletin_num=#{bulletin_num} -->
+	  
+	  DELETE FROM bulletin 
+	  WHERE  bulletin_num = #{bulletin_num} 
+	  
+   
+	</delete>
+	
+	<!-- 전체 게시글 조회 -->
+	 
+	<select id="listAll" resultType="com.cz.fms.article.domain.Bulletin">
+	  <!-- 
+	  select *
+	  from bulletin
+	  where bulletin_num > 0 
+	  order by bulletin_num desc 
+	  -->
+	  
+	  SELECT * 
+	  FROM   bulletin 
+	  WHERE  bulletin_num > 0 
+	  ORDER  BY bulletin_num DESC 
+	</select>
+	 
+	<!-- 페이지처리  게시글  -->
+	
+	<select id="listPage" resultType="com.cz.fms.article.domain.Bulletin">
+	
+	<!-- 
+	SELECT bulletin_num ,bulletintype_num ,bulletin_title, member_num, bulletin_content, bulletin_date, bulletin_hitcount
+	FROM (SELECT CEIL(ROWNUM/#{perPageNum}) page, bulletin_num ,bulletintype_num ,bulletin_title, bulletin_content, member_num, bulletin_date, bulletin_hitcount FROM bulletin ORDER BY bulletin_num DESC)
+	WHERE page = #{page}
+	ORDER BY bulletin_num DESC 
+	-->
+	
+	SELECT bulletin_num, 
+       		    bulletintype_num, 
+       		 	bulletin_title, 
+       			member_num, 
+       			bulletin_content, 
+       			bulletin_date, 
+       			bulletin_hitcount 
+	FROM   (SELECT Ceil(rownum /#{perPageNum}) page, 
+               				bulletin_num, 
+               				bulletintype_num, 
+               				bulletin_title, 
+               				bulletin_content, 
+               				member_num, 
+               				bulletin_date, 
+               				bulletin_hitcount 
+        		FROM   bulletin 
+        		ORDER  BY bulletin_num DESC) 
+	WHERE  page = #{page} 
+	ORDER  BY bulletin_num DESC 
+	
+	</select> 
+	
+	<!-- 페이지 Count -->
+	
+	<select id="countPaging" resultType="int">
+	
+	<!-- 
+	select count(bulletin_num)
+	from bulletin
+	where bulletin_num>0 
+	-->
+	
+	SELECT Count(bulletin_num) 
+	FROM   bulletin 
+	WHERE  bulletin_num > 0 
+	</select>
+	
+	<!--Search list 출력-->
+	
+	<select id="listSearch" resultType="com.cz.fms.article.domain.Bulletin">
+	 SELECT bulletin_num,
+            	 bulletintype_num,
+           	  	 bulletin_title,
+            	 bulletin_content,
+            	 member_num,
+            	 bulletin_date,
+            	 bulletin_hitcount,
+            	 reply_count
+      FROM (SELECT CEIL(ROWNUM/#{perPageNum}) page,
+                   	 	 	bulletin_num,
+                   			bulletintype_num, 
+                   			bulletin_title, 
+                   			bulletin_content,
+                   			member_num, 
+                   			bulletin_date, 
+                   			bulletin_hitcount,
+                   			reply_count
+            	FROM bulletin 
+            	ORDER BY bulletin_num DESC)
+      WHERE page = #{page}
+      <include refid="search"></include>
+      ORDER BY bulletintype_num asc, bulletin_num desc
+	</select>
+	 
+	<!-- Search list count -->
+	
+	<select id="listSearchCount" resultType="int">
+	 SELECT count(bulletin_num)
+     FROM bulletin
+     WHERE bulletin_num > 0
+      <include refid="search"></include>
+   </select>
+   
+   <sql id="search">
+      <if test="searchType != null">
+         <if test="searchType == 't'.toString()">
+            AND bulletin_title like ('%' ||#{keyword} || '%')
+         </if>
+         <if test="searchType == 'c'.toString()">
+            AND bulletin_content like ('%' ||#{keyword} || '%')
+         </if>
+         <if test="searchType == 'w'.toString()">
+            AND member_num like ('%' ||#{keyword} || '%')
+         </if>
+         <if test="searchType == 'tc'.toString()">
+            AND bulletin_title like ('%' ||#{keyword} || '%')
+            OR bulletin_content like ('%' ||#{keyword} || '%')
+         </if>
+         <if test="searchType == 'cw'.toString()">
+            AND bulletin_title like ('%' ||#{keyword} || '%')
+            OR member_num like ('%' ||#{keyword} || '%')
+         </if>
+         <if test="searchType == 'tcw'.toString()">
+            AND bulletin_title like ('%' ||#{keyword} || '%')
+            OR bulletin_content like ('%' ||#{keyword} || '%')
+            OR member_num like ('%' ||#{keyword} || '%')
+         </if>
+      </if>
+   </sql>
+	 
+	<update id="updateReplyCount">
+	
+	<!-- 
+	update bulletin set reply_count = reply_count + #{amount}
+	where bulletin_num = #{bulletin_num} 
+	-->
+	
+	UPDATE bulletin 
+	SET    reply_count = reply_count + #{amount} 
+	WHERE  bulletin_num = #{bulletin_num} 
+	</update>
+	
+	<update id="updateViewCount">
+	
+	<!-- 
+	update bulletin 
+	set bulletin_hitcount = bulletin_hitcount +1
+	where bulletin_num = #{bulletin_num} 
+	-->
+	
+	UPDATE bulletin 
+	SET    bulletin_hitcount = bulletin_hitcount + 1 
+	WHERE  bulletin_num =  #{bulletin_num} 
+	</update>
+	
+</mapper>
