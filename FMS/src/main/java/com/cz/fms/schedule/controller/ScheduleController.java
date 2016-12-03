@@ -35,7 +35,7 @@ public class ScheduleController {
 		logger.info("add_View GET 실행.....................");
 	}
 	@RequestMapping(value="/add_View", method = RequestMethod.POST)
-	public void addViewPOST(Schedule schedule, Model model) throws Exception{
+	public String addViewPOST(Schedule schedule, Model model) throws Exception{
 		logger.info("add_View POST 실행.....................");
 		if(schedule.getSchedule_deadline()==null){//마감을 안정했을 시
 			schedule.setSchedule_deadline(schedule.getSchedule_date());//데드라인을 일정날짜와 같게 설정해준다.
@@ -43,6 +43,8 @@ public class ScheduleController {
 		schedule.setSchedule_writer("방그리");//정적인 값 테스트
 		service.scheduleAdd(schedule);
 		model.addAttribute("msg", "OK");
+		
+		return "redirect:/schedule/listAll";
 	}
 	
 	/**
@@ -61,6 +63,7 @@ public class ScheduleController {
 		
 		service.scheduleModify(schedule);
 		model.addAttribute("schedule_num", schedule.getSchedule_num());
+		model.addAttribute("msg", "OK");
 		
 		return "/schedule/detail_View";
 	}
@@ -72,11 +75,11 @@ public class ScheduleController {
 	 * */
 	@RequestMapping(value="/remove", method = RequestMethod.POST)
 	public String remove(@RequestParam("schedule_num") int schedule_num, RedirectAttributes rttr) throws Exception{
-		logger.info("일정삭제 post 실행....................."+schedule_num);
+		logger.info("일정삭제 post 실행.....................");
 		service.scheduleDelete(schedule_num);
 		rttr.addFlashAttribute("msg", "OK");
 		
-		return "redirect:/schedule/detail_View";
+		return "redirect:/schedule/listAll";
 	}
 	
 	/**
@@ -100,16 +103,29 @@ public class ScheduleController {
 	}
 	
 	/**
-	 * 상세 일정 보기 메소드로 /schedule/readSchedule로 GET요청이 들어왔을 경우 실행
+	 * 상세 일정 보기 메소드로 /schedule/detail_View로 GET요청이 들어왔을 경우 실행
 	 * paranname : schedule
 	 * value : schedule
 	 * @author "안광호"
 	 * */
 	@RequestMapping(value="/detail_View", method = RequestMethod.GET)
-	public void readSchedule(Integer schedule_num, Model model) throws Exception{
+	public void readSchedule(@RequestParam("schedule_num") Integer schedule_num, Model model) throws Exception{
 		logger.info("detail_view 실행.......................");
 		if(schedule_num != null)
 		model.addAttribute(service.detailSchedule(schedule_num));
+	}
+	
+	/**
+	 * 경기참여 메소드 /schedule/joinGame로 POST요청이 들어왔을 경우 실행
+	 * @author "안광호"
+	 * */
+	@RequestMapping(value="/joinGame", method = RequestMethod.POST)
+	public String joinGame(Integer schedule_num, int member_num, Model model) throws Exception{
+		logger.info("joinGame 실행......................."+schedule_num+"|"+member_num);
+		service.joinSchedule(schedule_num, member_num);
+		
+		model.addAttribute("schedule_num" ,schedule_num);
+		return "/schedule/detail_View";
 	}
 	
 	/**

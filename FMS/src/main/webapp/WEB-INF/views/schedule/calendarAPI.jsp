@@ -20,7 +20,18 @@
 				var jsonData = new Array();
 				var calender={};
 				
-				var d = new Date();
+				var nowDay = new Date();
+				
+				var $modal = $('#detailview');
+				var nowScheduleNum;
+				
+				//현재 날짜 중 일이 1자리 수라면 앞에 0을 붙여준다.
+				if(nowDay.getDate()<10){
+					nowDay = nowDay.getFullYear()+"-"+(nowDay.getMonth()+1)+"-0"+(nowDay.getDate());
+				}else{
+					nowDay = nowDay.getFullYear()+"-"+(nowDay.getMonth()+1)+"-"+(nowDay.getDate());
+				}
+				
 				$.ajax({
 					   type : 'GET',
 					   url  : '/schedule/jsontest',
@@ -30,13 +41,19 @@
 						   for(var k=0; k<data.length; k++){
 							   date = new Date(data[k].schedule_deadline);
 							   date.setTime(date.getTime()+86400000);
-							   alert(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+(date.getDate()));
-						   		calender={id : data[k].schedule_num,
-										  title : data[k].schedule_title,
-										  start : data[k].schedule_date,
-										  end : date.getFullYear()+"-"+(date.getMonth()+1)+"-"+(date.getDate())
-						   				 };
-						   		jsonData.push(calender);
+							   
+							   if(date.getDate()<10){
+							       date = date.getFullYear()+"-"+(date.getMonth()+1)+"-0"+(date.getDate());
+							   }else{
+								   date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+(date.getDate());
+							   }
+						   	   
+							   calender={id : data[k].schedule_num,
+										 title : data[k].schedule_title,
+										 start : data[k].schedule_date,
+										 end : date
+						   				};
+						   	   jsonData.push(calender);
 						   }
 					   },
 					   complete : function(data) {
@@ -47,7 +64,7 @@
 									center : 'title',
 									right : 'month,agendaWeek,agendaDay,listMonth'
 								},
-								defaultDate : d.getFullYear()+"-"+(d.getMonth() + 1)+"-"+d.getDate(),
+								defaultDate : nowDay,
 								locale : initialLocaleCode,
 								weekNumbers : true,
 								navLinks : true, // can click day/week names to navigate views
@@ -56,26 +73,57 @@
 								selectable: true,
 								selectHelper: true,
 								select: function(start, end) {//표안에 선택시 이벤트처리
-									window.open("/schedule/add_View", '등록','width=700,height=600');
+									//window.open("/schedule/add_View", '등록','width=700,height=600');
+									$('#myModal').modal('show');
 									var eventData;
 									$('#calendar').fullCalendar('unselect');
 								},
 								events : jsonData,
 								eventClick: function(event) {//클릭시 이벤트 보여주는 메소드
-									window.open("/schedule/detail_View?schedule_num="+event.id, event.title, 'width=700,height=600');// 상세일정 보여주는 popup창 생성
-									return false;
+									/* $('#detailview').modal({
+										remote: '/schedule/detail_View?schedule_num='+event.id
+									}); */
+									nowScheduleNum = event.id;
+									$('#detailview').load('/schedule/detail_View?schedule_num='+event.id, '', function() {
+										$('#detailview').modal();
+									})
 								}
 							});
 					   },
 					   error : function(xhr, status, error) {
 							alert("에러발생");
 			           }
-				});				
+				});
+				
+				//참여 버튼 클릭시
+				$modal.on('click', '#joinGame', function(){
+					var params = 'schedule_num='+nowScheduleNum+'&member_num='+'99';
+					$.ajax({
+						   type : 'POST',
+						   url  : '/schedule/joinGame',
+						   data : params,
+						   success : function(data) {
+							   $('#detailview').load('/schedule/detail_View?schedule_num='+nowScheduleNum, '', function() {//페이지 호출
+								})
+						   }
+					})
+				});
+				
+				//수정 버튼 클릭시
+				$modal.on('click', '#modify', function(){
+					var params = jQuery("#scheduleModify").serialize();
+					$.ajax({
+						   type : 'POST',
+						   url  : '/schedule/modify',
+						   data : params,
+						   success : function(data) {
+							   $('#detailview').load('/schedule/detail_View?schedule_num='+nowScheduleNum, '', function() {//페이지 호출
+								})
+						   }
+					})
+				});
 			}); 
 	
-	function recall() {
-		location.replace("/schedule");
-	}
 </script>
 <style>
 body {
@@ -93,6 +141,8 @@ body {
 </style>
 </head>
 <body>
+
 	<div id='calendar'></div>
+	
 </body>
 </html>

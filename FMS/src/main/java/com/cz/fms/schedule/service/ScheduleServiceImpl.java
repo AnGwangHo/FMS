@@ -45,16 +45,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 		Schedule schedule = scheduleDao.detailSchedule(schedule_num);//일정 상세정보를 가져와서 참여인원을 가져온다.
 		
 		String joinName = schedule.getSchedule_joinname();//일정에 참여하는 회원들을 저장하는 임시 변수
-		
-		if(joinName.isEmpty() == true){//만약 처음으로 참여하는 회원이면
+		if(joinName == null){//만약 처음으로 참여하는 회원이면
 			schedule.setSchedule_joinname(member_num+"");//최초등록
 		}else{//이미 다른회원도 등록되어 있는 경우
 			if(joinName.matches(".*"+member_num+".*")==true){//이미 참여한 회원일 경우
-				if(joinName.indexOf(member_num)==0){//가장 처음으로 등록된 경우
+				if(joinName.indexOf(member_num+"")==0){//가장 처음으로 등록된 경우
 					if(joinName.length()==(member_num+"").length()){//하나만 있는 경우
-						schedule.setSchedule_joinname(null);//현재 회원제거
+						schedule.setSchedule_joinname("");//현재 회원제거
 					}else{//여러명이 등록되어 있는 경우
-						schedule.setSchedule_joinname(joinName.replace(member_num+",", ""));
+						schedule.setSchedule_joinname(joinName.replace(","+member_num, ""));
 					}
 				}else if(joinName.indexOf(member_num)+(member_num+"").length()==joinName.length()){//가장 마지막으로 등록된 경우
 					schedule.setSchedule_joinname(joinName.replace(","+member_num, ""));
@@ -63,9 +62,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 				}
 			}else{//등록 안된 경우
 				joinName+=","+member_num;//참여인원에 추가한다
+				schedule.setSchedule_joinname(joinName);
 			}
 		}
-		
 		scheduleDao.update(schedule);
 	}
 

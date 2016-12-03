@@ -8,7 +8,7 @@
 <title>title</title>
 </head>
 <body>
-<form role="form" method="post">
+<form action="/schedule/add_View" method="post">
 <div>
 	<input type="text" name="schedule_title" placeholder="일정 제목을 입력하세요...">
 </div>
