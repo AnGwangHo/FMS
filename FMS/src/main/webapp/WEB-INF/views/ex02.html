@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+
+<ul id="replies">
+
+</ul>
+
+<script id="template" type="text/x-handlebars-template">
+    {{#each .}}
+    <li class="replyLi">
+        <div>{{reply_num}}</div>
+        <div>{{reply_content}}</div>
+        <div>{{reply_date}}</div>
+    </li>
+    {{/each}}
+</script>
+<script>
+    var source = $("#template").html();
+    var template = Handlebars.compile(source);
+    var data  = [
+        {reply_num:1, reply_content:'1번 댓글....', reply_date:new Date()},
+        {reply_num:2, reply_content:'2번 댓글....', reply_date:new Date()},
+        {reply_num:3, reply_content:'3번 댓글....', reply_date:new Date()},
+        {reply_num:4, reply_content:'4번 댓글....', reply_date:new Date()},
+        {reply_num:5, reply_content:'5번 댓글....', reply_date:new Date()}
+    ];
+    $("#replies").html(template(data));
+
+</script>
+</body>
+</html>

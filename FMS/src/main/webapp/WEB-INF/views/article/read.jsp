@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE HTML>
@@ -24,12 +24,13 @@
 
 <!-- bootstrap -->
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
+   src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+<link href="/html/css/bootstrap.min.css" rel="stylesheet">
 <link href="/html/css/btn_3d.css" rel="stylesheet">
 
 <!-- responsive -->
@@ -65,7 +66,7 @@
   
   <!-- main -->
   
-  <main role="main" id="main">
+  <main role="main">
     <div class="container"> 
       
       <!-- tab-content -->
@@ -73,134 +74,134 @@
         
         <!-- Home -->
         
-			<section id="home" class="tab-pane fade in active">
-				<div class="table-responsive">
-					<div class="col-sm-12">
-						<table class="table table-bordered ">
-							<tr>
-								<td class="active">글제목</td>
-								<td colspan="3"><label style="color: white">정적테스트중...</label></td>
-							</tr>
-	
-							<tr>
-								<td class="active">작성자</td>
-								<td ><label style="color: white">정적테스트중...</label></td>
-								<td class="active">작성일</td>
-								<td ><label style="color: white">정적테스트중...</label></td>
-							</tr>
-	
-							<tr>
-								<td class="active">첨부파일</td>
-								<td><label style="color: white">정적테스트중...</label></td>
-								<td class="active">조회수</td>
-								<td><label style="color: white">정적테스트중...</label></td>
-							</tr>
-	
-							<tr>
-								<td colspan="4" ><pre>정적테스트중...
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								</pre></td>
-							</tr>
-						</table>
-					</div>
-		
-				</div>
-				
-							
-					<div align="right" style="margin-right: 10px">
-						<button onclick="javascript:location.href='listAll'" class="btn btn-danger btn3d">
-							<span class="glyphicon glyphicon-remove"></span> 삭제 
-						</button>
-						<button onclick="javascript:location.href='write'" class="btn btn-primary  btn3d">
-							<span class="glyphicon glyphicon-pencil"></span> 글 수정
-						</button>
-						<button onclick="javascript:location.href='listAll'" class="btn btn-info btn3d">
-							<span class="glyphicon glyphicon-th-list"></span> 목록으로 
-						</button>
-					</div>
-				
-				
-				<!-- reply -->
-				<div class="row">
-					<div class="col-md-12">
-			
-						<div class="box box-success">
-							<div class="box-header">
-								<h3 class="box-title" style="color: white">ADD NEW REPLY</h3>
-							</div>
-							<div class="box-body">
-								<label for="exampleInputEmail1" style="color: white">Writer</label> <input
-									class="form-control" type="text" placeholder="USER ID"
-									id="newReplyWriter"> <label for="exampleInputEmail1" style="color: white">Reply
-									Text</label> <input class="form-control" type="text"
-									placeholder="REPLY TEXT" id="newReplyText">
-			
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer">
-								<button type="button" class="btn btn-primary" id="replyAddBtn">ADD
-									REPLY</button>
-							</div>
-						</div>
-			
-			
-						<!-- The time line -->
-						<ul class="timeline">
-							<!-- timeline time label -->
-							<li class="time-label" id="repliesDiv"><span class="bg-green" style="color: white">
-									Replies List </span></li>
-						</ul>
-			
-						<div class='text-center'>
-							<ul id="pagination" class="pagination pagination-sm no-margin ">
-			
-							</ul>
-						</div>
-			
-					</div>
-					<!-- /.col -->
-				</div>
-				<!-- /.row -->
-			
-			
-			          
-			<!-- Modal -->
-			<div id="modifyModal" class="modal modal-primary fade" role="dialog">
-			  <div class="modal-dialog">
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"></h4>
-			      </div>
-			      <div class="modal-body" data-rno>
-			        <p><input type="text" id="replytext" class="form-control"></p>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-info" id="replyModBtn">Modify</button>
-			        <button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>      
+        <form role="form" method="post">
+        		<input type="hidden" name="bulletin_num" value="${ bulletin.bulletin_num}">
+        
+        
+         
+            <div class="table-responsive">
+               <div class="col-sm-12">
+                  <table class="table table-bordered ">
+                     <tr>
+                        <td class="active">글제목</td>
+                        <td colspan="3"><label style="color: white">${bulletin.bulletin_title }</label></td>
+                     </tr>
+   
+                     <tr>
+                        <td class="active">작성자</td>
+                        <td ><label style="color: white">${bulletin.member_num }</label></td>
+                        <td class="active">작성일</td>
+                        <td ><label style="color: white">${bulletin.bulletin_date }</label></td>
+                     </tr>
+   
+                     <tr>
+                        <td class="active">첨부파일</td>
+                        <td><label style="color: white">${bulletin.bulletin_attachment }</label></td>
+                        <td class="active">조회수</td>
+                        <td><label style="color: white">${bulletin.bulletin_hitcount }</label></td>
+                     </tr>
+   
+                     <tr>
+                        <td colspan="4" ><pre>${bulletin.bulletin_content }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        </pre></td>
+                     </tr>
+                  </table>
+               </div>
+      
+            </div>
+            </form>
+            
+               <div align="right" style="margin-right: 10px">
+                  <button onclick="javascript:location.href='remove'" class="btn btn-danger btn3d">
+                     <span class="glyphicon glyphicon-remove"></span> 삭제 
+                  </button>
+                  <button type="submit"  class="btn btn-primary  btn3d">
+                     <span class="glyphicon glyphicon-pencil"></span> 글 수정
+                  </button>
+                  <button  onclick="javascript:location.href='listPage'" class="btn btn-info btn3d">       <!-- onclick="javascript:location.href='listPage'" -->
+                     <span class="glyphicon glyphicon-th-list"></span> 목록으로 
+                  </button>
+               </div>
+            
+            
+            <!-- reply -->
+            <div class="row">
+               <div class="col-md-12">
+         
+                  <div class="box box-success">
+                     <div class="box-header">
+                        <h3 class="box-title" style="color: white">ADD NEW REPLY</h3>
+                     </div>
+                     <div class="box-body">
+                        <label for="exampleInputEmail1" style="color: white">Writer</label> <input
+                           class="form-control" type="text" placeholder="USER ID"
+                           id="newReplyWriter"> <label for="exampleInputEmail1" style="color: white">Reply
+                           Text</label> <input class="form-control" type="text"
+                           placeholder="REPLY TEXT" id="newReplyText">
+         
+                     </div>
+                     <!-- /.box-body -->
+                     <div class="box-footer">
+                        <button type="button" class="btn btn-primary" id="replyAddBtn">ADD
+                           REPLY</button>
+                     </div>
+                  </div>
+         
+         
+                  <!-- The time line -->
+                  <ul class="timeline">
+                     <!-- timeline time label -->
+                     <li class="time-label" id="repliesDiv"><span class="bg-green" style="color: white">
+                           Replies List </span></li>
+                  </ul>
+         
+                  <div class='text-center'>
+                     <ul id="pagination" class="pagination pagination-sm no-margin ">
+         
+                     </ul>
+                  </div>
+         
+               </div>
+               <!-- /.col -->
+            </div>
+            <!-- /.row -->
+         
+         
+                   
+         <!-- Modal -->
+         <div id="modifyModal" class="modal modal-primary fade" role="dialog">
+           <div class="modal-dialog">
+             <!-- Modal content-->
+             <div class="modal-content">
+               <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title"></h4>
+               </div>
+               <div class="modal-body" data-rno>
+                 <p><input type="text" id="replytext" class="form-control"></p>
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-info" id="replyModBtn">Modify</button>
+                 <button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               </div>
+               
+             </div>
+           </div>
+         </div>      
 
 
-
+<!--  -->
 <script id="template" type="text/x-handlebars-template">
 {{#each .}}
 <li class="replyLi" data-rno={{rno}}>
@@ -213,39 +214,13 @@
   <div class="timeline-body">{{replytext}} </div>
     <div class="timeline-footer">
      <a class="btn btn-primary btn-xs" 
-	    data-toggle="modal" data-target="#modifyModal">Modify</a>
+       data-toggle="modal" data-target="#modifyModal">Modify</a>
     </div>
-  </div>			
+  </div>         
 </li>
 {{/each}}
 </script>
-
-
-				
-			</section>
-        
-        <!-- Home --> 
-        
-        <!-- about -->
-        
-        <section id="menu1" class="tab-pane fade other-page about-pan">
-        </section>
-        
-        <!-- about --> 
-        
-        <!-- Newsletter Subscribtion -->
-        
-        <section id="menu2" class="tab-pane fade other-page">
-        </section>
-        
-        <!-- Newsletter Subscribtion --> 
-        
-        <!-- Contact -->
-        
-        <section id="menu3" class="tab-pane fade other-page">
-        </section>
-        
-        <!-- Contact --> 
+ 
         
       </div>
       
@@ -257,6 +232,37 @@
   <!-- main --> 
   
   <!-- footer -->
+  
+  <script>
+  
+	
+	$(document).ready(function(){
+		
+		var formObj = $("form[role='form']");
+		
+		console.log(formObj);
+		
+		$(".btn-info").on("click", function(){
+			formObj.attr("action", "/article/listAll");
+			formObj.attr("method", "get");		
+			formObj.submit();
+		});
+		
+		$(".btn-danger").on("click", function(){
+			formObj.attr("action", "/article/remove");
+			formObj.submit();
+		});
+		
+		$(".btn-primary").on("click", function(){
+			formObj.attr("action" , "/article/modify");
+			formObj.attr("method","get");
+			formObj.submit();
+		});
+		
+	});
+	
+	</script>
+  
   
   <jsp:include page="../include/footer.jsp"/>
  
@@ -321,13 +327,13 @@
 <script type="text/javascript">
 // Fake file upload
 document.getElementById('fake-file-button-browse').addEventListener('click', function() {
-	document.getElementById('files-input-upload').click();
+   document.getElementById('files-input-upload').click();
 });
 
 document.getElementById('files-input-upload').addEventListener('change', function() {
-	document.getElementById('fake-file-input-name').value = this.value;
-	
-	document.getElementById('fake-file-button-upload').removeAttribute('disabled');
+   document.getElementById('fake-file-input-name').value = this.value;
+   
+   document.getElementById('fake-file-button-upload').removeAttribute('disabled');
 });
 </script>
 </body>

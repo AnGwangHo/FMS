@@ -1,4 +1,4 @@
-// set the date we're counting down to
+/*// set the date we're counting down to
 var target_date = new Date('Jan, 31, 2018').getTime();
  
 // variables for time units
@@ -28,4 +28,4 @@ setInterval(function () {
     countdown.innerHTML = '<span class="days">' + days +  ' <b>Days</b></span> <span class="hours">' + hours + ' <b>Hours</b></span> <span class="minutes">'
     + minutes + ' <b>Minutes</b></span> <span class="seconds">' + seconds + ' <b>Seconds</b></span>';  
  
-}, 1000);
+}, 1000);*/

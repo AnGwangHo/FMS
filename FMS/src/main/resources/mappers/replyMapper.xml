@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<mapper namespace="com.cz.fms.article">
+	
+	<!-- 전체 댓글 조회 -->
+	<select id="replylist" resultType="com.cz.fms.article.domain.Reply">
+	  <!-- select *
+	  from reply
+	  where bulletin_num = #{bulletin_num}
+	  order by reply_num desc -->
+	  
+	  SELECT * 
+	  FROM   reply 
+	  WHERE  bulletin_num = #{bulletin_num} 
+	  ORDER  BY reply_num DESC 
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="replycreate" >
+	    insert into reply (reply_num, bulletin_num, reply_content, member_num)
+           values (reply_num_seq.nextval, #{bulletin_num}, #{reply_content}, #{member_num})
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="replyupdate" parameterType="com.cz.fms.article.domain.Reply">
+	  update reply set reply_content=#{reply_content}
+	  where reply_num = #{reply_num}
+	</update> 
+	
+	<!-- 댓글 삭제 -->
+	<delete id="replydelete">
+	  delete from reply where reply_num=#{reply_num}
+	</delete>
+	
+	<!-- 댓글 리스트의 페이지 처리 -->
+	<select id="replylistPage" resultType="com.cz.fms.article.domain.Reply">
+	SELECT reply_num, 
+       member_num, 
+       reply_content, 
+       reply_date, 
+       bulletin_num 
+	FROM   (SELECT Ceil(rownum / #{cri.perPageNum}) page, 
+               reply_num, 
+               member_num, 
+               reply_content, 
+               reply_date, 
+               bulletin_num 
+        FROM   reply 
+        WHERE  bulletin_num = #{bulletin_num}
+        ORDER  BY reply_num DESC) 
+	WHERE  page = #{cri.page}
+	ORDER  BY reply_num DESC
+	</select>
+
+    <!-- 게시글의 댓글수  -->
+	<select id="replycount" resultType="int">
+		select count(bulletin_num) from reply where bulletin_num =#{bulletin_num}
+	</select>
+	
+	<!-- 게시글 num 알아내기 -->
+	<select id="getBulletin_num" resultType="int">
+	   select bulletin_num from reply where reply_num = #{reply_num}
+	</select>
+	
+</mapper>
