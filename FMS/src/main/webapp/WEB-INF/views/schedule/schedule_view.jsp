@@ -34,8 +34,15 @@
 
 <link href="/html/css/font-awesome.min.css" rel="stylesheet">
 
-<!-- Slider -->
-
+<style type="text/css">
+	#buttonLine{
+		text-align: right;
+	}
+	
+	textarea{
+		resize: none;
+	}
+</style>
 </head>
 
 <body>
@@ -46,11 +53,13 @@
 	<!-- header -->
 	<jsp:include page="../include/header.jsp" />
 	<!-- Trigger the modal with a button -->
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-		data-target="#myModal">Open Modal</button>
 
 	<!-- main -->
 
+	<div>
+	<h1><p style="color: red;">---------------공지사항 들어갈 공간--------------</p></h1>
+	</div>
+	
 	<!-- 일정추가 Modal -->
 	<div id="myModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -63,9 +72,6 @@
 				</div>
 				<div class="modal-body">
 					<jsp:include page="../schedule/add_View.jsp"></jsp:include>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 

@@ -9,38 +9,30 @@
 </head>
 <body>
 <form action="/schedule/add_View" method="post">
-<div>
-	<input type="text" name="schedule_title" placeholder="일정 제목을 입력하세요...">
-</div>
-<div>
-	<label><-작성자</label>|
-	<input type="date" name="schedule_date">
-</div>
-<div>
-	<input type="text" name="schedule_location" placeholder="모임 장소를 입력하세요...">추후 지도 API삽입
-</div>
-<div>
-	<textarea rows="10" cols="50" name="schedule_content" placeholder="일정 내용을 입력하세요...."></textarea>
-</div>
-<div>
-	<input type="submit" value="등록">
-</div>
+	<div class="row col-*-10 input-group">
+		<span class="input-group-addon">Title</span>
+		<input class="form-control" id="title" type="text" name="schedule_title" placeholder="일정 제목을 입력하세요...">
+	</div>
+	<div class="row col-*-10 input-group">
+			<span class="input-group-addon">Writer</span>
+			<input class="form-control" id="schedule_writer" type="text" disabled>
+			<span class="input-group-addon">start</span>
+			<input class="form-control" type="date" name="schedule_date">
+			<span class="input-group-addon">end</span>
+			<input class="form-control" type="date" name="schedule_deadline">
+	</div>
+	<div class="row col-*-10 input-group">
+		<span class="input-group-addon">Location</span>
+		<input class="form-control" type="text" name="schedule_location" placeholder="모임 장소를 입력하세요...">
+	</div>
+	<div class="row col-*-10 form-group">
+		<textarea class="form-control" rows="10" name="schedule_content" placeholder="일정 내용을 입력하세요...."></textarea>
+	</div>
+	<div class="row col-*-10 form-group" id="buttonLine">
+		<input class="btn btn-success" type="submit" value="등록">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
 </form>
-<input type="button" value="닫기" id="close">
 
-<script>
-	$(function() {
-		$("#close").click(function() {
-			window.opener.recall();//부모창의 스크립트를 호출
-			self.close();//자기 자신을 닫는다.
-		});
-		
-		if('${msg}'=='OK'){
-			$("#close").trigger('click');
-		}
-		
-		document.title = '일정등록';//자식창 이름 변경
-	});
-</script>
 </body>
 </html>
