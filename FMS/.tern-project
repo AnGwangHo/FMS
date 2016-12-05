@@ -3,9 +3,17 @@
     "guess-types": {
       
     },
-    "outline": {
+    "browser-extension": {
+      
+    },
+    "jquery-extension": {
       
     }
   },
-  "ecmaVersion": 5
+  "libs": [
+    "ecma5",
+    "browser",
+    "jquery"
+  ],
+  "ecmaVersion": 6
 }

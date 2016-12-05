@@ -2,8 +2,7 @@
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page session="false" %>
-<!DOCTYPE HTML>
+<%@ page session="false"%>
 
 <html>
 <head>
@@ -14,253 +13,149 @@
 
 <meta name="description" content="">
 <meta name="author" content="">
-<title>:: Floxi ::</title>
-<link rel="shortcut icon" href="/html/images/favicon.ico" type="image/x-icon">
+<title>:: 회원목록 ::</title>
+<link rel="shortcut icon" href="/html/images/favicon.ico" type="/html/image/x-icon">
+<!-- style -->
+<link href="/html/css/style.css" rel="stylesheet">
+<!-- style -->
+<!-- bootstrap -->
+<link href="/html/css/bootstrap.min.css" rel="stylesheet">
+<!-- responsive -->
+<link href="/html/css/responsive.css" rel="stylesheet">
+<!-- font-awesome -->
+<link href="/html/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- 3d Button Custum -->
 <link href="/html/css/btn_3d.css" rel="stylesheet">
-
-<!-- style -->
-<link href="/html/css/style.css" rel="stylesheet">
-
-<!-- 스크립트 처리를 위한 추가 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-<!-- bootstrap -->
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
+<!--  vote-style(youngmook) -->
+<!-- <link href="/html/css/votestyle.css" rel="stylesheet"> -->
+<script src="/html/js/jquery.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="/html/js/jquery.contact.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/html/js/memberlist.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.filterable.btn-filter').click(function(){
+        var $panel = $(this).parents('.filterable'),
+        $filters = $panel.find('.filters input'),
+        $tbody = $panel.find('.table tbody');
+        if ($filters.prop('disabled') == true) {
+            $filters.prop('disabled', false);
+            $filters.first().focus();
+        } else {
+            $filters.val('').prop('disabled', true);
+            $tbody.find('.no-result').remove();
+            $tbody.find('tr').show();
+        }
+    });
 
-<!-- responsive -->
-
-<link href="/html/css/responsive.css" rel="stylesheet">
-
-<!-- font-awesome -->
-
-<link href="/html/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- Slider -->
-
-<link href="/html/css/jquery.fadeshow-0.1.1.min.css" rel="stylesheet">
+    $('.filterable .filters input').keyup(function(e){
+        /* Ignore tab key */
+        var code = e.keyCode || e.which;
+        if (code == '9') return;
+        /* Useful DOM data and selectors */
+        var $input = $(this),
+        inputContent = $input.val().toLowerCase(),
+        $panel = $input.parents('.filterable'),
+        column = $panel.find('.filters th').index($input.parents('th')),
+        $table = $panel.find('.table'),
+        $rows = $table.find('tbody tr');
+        /* Dirtiest filter function ever ;) */
+        var $filteredRows = $rows.filter(function(){
+            var value = $(this).find('td').eq(column).text().toLowerCase();
+            return value.indexOf(inputContent) === -1;
+        });
+        /* Clean previous no-result if exist */
+        $table.find('tbody .no-result').remove();
+        /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+        $rows.show();
+        $filteredRows.hide();
+        /* Prepend no-result row if all rows are filtered */
+        if ($filteredRows.length === $rows.length) {
+            $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+        }
+    });
+});
+</script>
 </head>
 
 <body>
 
-<!-- slider -->
+<!-- side bar -->
 
-<div class="background"></div>
-<div class="over-bg"></div>
-
-<!-- slider -->
-
-<!-- slider -->
-
-<main role="slider-container"> 
-
-<!-- side bar --> 
 <jsp:include page="../include/side.jsp"/>
+
 
 <!-- header -->
 <jsp:include page="../include/header.jsp"/>
 
-  <!-- 본문 시작 -->
-<section class="content">
-	<div class="container">
-			
-		<!-- hidden값처리 -->
-		<form role="form" method="get">
-			<!-- member_num으로 사용자 정보 받아오기 -->
-			<input type='hidden' name='member_num' value="${MemberAdmin.member_num}">
-		</form>
-	
-		<div class="tab-content" align="center">
-		 	<!-- title image -->
-	    	<img src="/html/images/admin.png" style="margin-top:20px; margin-bottom:50px; height: 50px">
-		
-			<!-- Table Form 시작-->
-			<table class="table table-bordered" style="width: 70%" >
-			
-				  <!-- Table header 정보 -->
-			      <tr style="color: white">
-			        <th style="width : 10%">회원 사진</th>
-			        <th style="width : 10%">회원 ID</th>
-			        <th style="width : 10%">회원 이름</th>
-			        <th style="width : 20%">전화번호</th>
-			        <th style="width : 10%">가입일</th>
-			        <th style="width : 5%">정보 수정</th>
-			        <th style="width : 5%">회원 탈퇴</th>
-			      </tr>
-	
-				
-				 <c:forEach items="${memberList}" var="MemberAdmin"> 
-				    <tr style="color: white;">
-				      <td><img src="/html/images/test_image.jpg" style="height: 55px"></td>
-				      <td style="font-size: 15pt; font-style: italic;"><a href='/member/member_read?member_num=${MemberAdmin.member_num}'>${MemberAdmin.member_id}</a></td>
-				      <td>${MemberAdmin.member_name}</td>
-				      <td >${MemberAdmin.member_phone}</td>
-				      <td>${MemberAdmin.member_regdate}</td>
-					  <td>
-					  	<button onclick="javascript:location.href='/member/member_modify?member_num=${MemberAdmin.member_num}'" class="btn btn-info btn-sm  btn3d"><span class="glyphicon glyphicon-edit"></span> 수정</button>
-					  </td>
-					  <td align="center">
-					  	  <button onclick="javascript:location.href='/member/member_remove?member_num=${MemberAdmin.member_num}'" class="btn btn-danger btn-sm btn3d">		
-					  	  <span class="glyphicon glyphicon-remove-circle"></span> 탈퇴
-						  </button>
-					  </td>
-				    </tr>
-				</c:forEach> 
-		    </table>
-		    <!-- Table Form 끝-->
-		    
-		    
-		    <!-- 검색 Form 시작 -->
-			<div class="input-group" style="width: 35%; margin-bottom: 10px">
-				<div class='box-body'>
-					<select name="searchType">
-						<option value="n"
-							<c:out value="${cri.searchType == null?'selected':''}"/>>
-							전체</option>
-						<option value="t"
-							<c:out value="${cri.searchType eq 't'?'selected':''}"/>>
-							이름</option>
-						<option value="c"
-							<c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
-							아이디</option>
-					</select> 
-					<input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
-					<button class="btn btn-info btn-xs" id='searchBtn'>검색</button>
-					<script>
-						$(document).ready(
-							function() {
-								$('#searchBtn').on(
-										"click",
-										function(event) {
-											self.location = "member_list"
-													+ '${pageMaker.makeQuery(1)}'
-													+ "&searchType="
-													+ $("select option:selected").val()
-													+ "&keyword=" + $('#keywordInput').val();
-							});
-						});
-					</script>
-				</div>
-			</div>
-			<!-- 검색 Form 끝-->
-		    
-		    
-		    <!-- 페이징 처리 시작 -->
-			<div class="box-footer">
-				<div class="text-center">
-					<ul class="pagination">
-						<c:if test="${pageMaker.prev}">
-							<li><a
-								href="member_list${pageMaker.makeSearch(pageMaker.startPage - 1) }">&laquo;</a></li>
-						</c:if>
+<!-- footer -->
 
-						<c:forEach begin="${pageMaker.startPage }"
-							end="${pageMaker.endPage }" var="idx">
-							<li
-								<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-								<a href="member_list${pageMaker.makeSearch(idx)}">${idx}</a>
-							</li>
-						</c:forEach>
-
-						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li><a
-								href="member_list${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
-						</c:if>
-					</ul>
-				</div>
-			</div>
-		    <!-- 페이징 처리 끝 -->
-		</div>
-	</div>
-</section>
-</main>
-  
-  <!-- footer -->
-  
-  <jsp:include page="../include/footer.jsp"/>
- 
+<jsp:include page="../include/footer.jsp"/>
 
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-
-<script src="/html/js/jquery.min.js" type="text/javascript"></script> 
-
-<!-- custom --> 
-
-<script src="/html/js/custom.js" type="text/javascript"></script> 
-<script src="/html/js/nav-custom.js" type="text/javascript"></script> 
-
-<!-- Include all compiled plugins (below), or include individual files as needed --> 
-
-<script src="/html/js/bootstrap.min.js" type="text/javascript"></script> 
-
-<!-- jquery.countdown --> 
-
-<script src="/html/js/countdown-js.js" type="text/javascript"></script> 
-<script type="text/javascript" src="/html/js/jquery.contact.js"></script> 
-
-<!-- slider --> 
-
-<script type="text/javascript" src="/html/js/background.cycle.js"></script> 
-<script type="text/javascript" src="/html/js/background.cycle-custom.js"></script> 
-<script src="/html/js/html5shiv.js" type="text/javascript"></script> 
-
-<!-- Typed --> 
-<!-- Typed jS --> 
-
-<script src="/html/js/typed.js" type="text/javascript"></script> 
-<script>
-
-
-    $(function(){
-        $("#typed").typed({
-            // strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
-            stringsElement: $('#typed-strings'),
-            typeSpeed: 100,
-            backDelay: 1000,
-            loop: true,
-            contentType: 'html', // or text
-            // defaults to false for infinite loop
-            loopCount: false,
-            callback: function(){ foo(); },
-            resetCallback: function() { newTyped(); }
-        });
-
-        $(".reset").click(function(){
-            $("#typed").typed('reset');
-        });
-
-    });
-
-    function newTyped(){ /* A new typed object */ }
-
-    function foo(){ console.log("Callback"); }
-</script>
-
-<!-- msg alert 알람창 스크립트 -->    
-<script>
-	var result = '${alert}';
-
-	//수정
-	if(result == 'MODIFY'){
-		alert("회원 수정이 완료되었습니다.");
-	}
-
-	//삭제
-	else if(result == 'REMOVE'){
-		alert("회원 삭제가 완료되었습니다.");
-	}
-</script>
-
-
+<!-- 본문내용! -->
+<div class="container" style="margin-bottom: 100px;">
+    <h3 style="color: white;"><i class="fa fa-caret-square-o-down" aria-hidden="true" style="margin-right: 20px;"></i>회원 목록</h3>
+    <hr>
+    <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h1 class="panel-title"><i class="fa fa-users" style="margin-right: 10px;"></i>회원 목록</h1>
+                <div class="pull-right">
+                    <button  class="btn btn-danger btn-sm btn3d  btn-filter" style="margin-top: -3px; margin-right: 20px"><span class="fa fa-external-link" ></span>검색</button>
+                </div>
+            </div>
+            <div style="width:1170px; height:400px; overflow:scroll; padding:10px; border:3; border-style:solid; border-color:black; overflow-x:hidden; ">
+            <table class="table">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="번호" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="이름" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="전화번호" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="이메일" disabled></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${memberlist}" var="list">
+                   <tr>
+                        <td>${list.member_num}</td>
+                        <td>${list.member_name}</td>
+                        <td>${list.member_phone}</td>
+                        <td>${list.member_email}</td>
+                   </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<style type="text/css">
+.filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+</style>
 </html>

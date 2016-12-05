@@ -89,7 +89,7 @@ audio, canvas, video {
 }
 blockquote:before, blockquote:after, q:before, q:after {
 	content: '';
-	content: none;
+	/* content: none; */
 }
 .clear {
 	clear: both;

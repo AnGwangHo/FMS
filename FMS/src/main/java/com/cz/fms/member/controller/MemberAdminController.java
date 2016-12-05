@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cz.fms.member.domain.Criteria;
 import com.cz.fms.member.domain.MemberAdmin;
-import com.cz.fms.member.domain.PageMaker;
-import com.cz.fms.member.domain.SearchCriteria;
+import com.cz.fms.member.domain.PageMakerMember;
+import com.cz.fms.member.domain.SearchCriteriaMember;
 import com.cz.fms.member.service.MemberAdminService;
 
 /**
@@ -26,7 +26,7 @@ import com.cz.fms.member.service.MemberAdminService;
  * @author KOSTA 126기 박찬용
  */
 @Controller
-@RequestMapping("/member/*")
+@RequestMapping("/admin/*")
 public class MemberAdminController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberAdminController.class);
@@ -65,7 +65,7 @@ public class MemberAdminController {
 		
 		rttr.addFlashAttribute("alert", "REMOVE");
 
-		return "redirect:/member/member_list";
+		return "redirect:/admin/member_list";
 	}
 
 	// 관리자 회원수정 GET
@@ -82,7 +82,7 @@ public class MemberAdminController {
 		service.updateMember(memberAdmin);
 		rttr.addFlashAttribute("alert", "MODIFY");
 		
-		return "redirect:/member/member_list";
+		return "redirect:/admin/member_list";
 	}
 
 	// 페이징 처리
@@ -94,7 +94,7 @@ public class MemberAdminController {
 
 	// 검색 + 페이징 처리
 	@RequestMapping(value = "/member_list", method = RequestMethod.GET)
-	public void listPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
+	public void listPage(@ModelAttribute("cri") SearchCriteriaMember cri, Model model) throws Exception {
 
 		logger.info(cri.toString());
 
@@ -103,7 +103,7 @@ public class MemberAdminController {
 		//logger.info("사이즈 수: " + service.memberListCriteria(cri).size());
 
 		// model.addAttribute("list", service.listAll());
-		PageMaker pageMaker = new PageMaker();
+		PageMakerMember pageMaker = new PageMakerMember();
 		pageMaker.setCri(cri);
 		// pageMaker.setTotalCount(3);
 		//pageMaker.setTotalCount(service.listCountCriteria(cri));

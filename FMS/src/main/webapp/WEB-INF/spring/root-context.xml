@@ -34,7 +34,6 @@
 	<!-- MyBatis SqlSession 설정 -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
-	
 	</bean>
 	
 	<!-- AOP 자동 Proxy 객체 생성을 위한 AspectJ 설정 -->

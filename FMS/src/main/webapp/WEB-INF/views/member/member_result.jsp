@@ -13,7 +13,7 @@
 
 <meta name="description" content="">
 <meta name="author" content="">
-<title>:: Floxi ::</title>
+<title>:: 회원가입완료 ::</title>
 <link rel="shortcut icon" href="/html/images/favicon.ico" type="/html/image/x-icon">
 <!-- style -->
 <link href="/html/css/style.css" rel="stylesheet">
@@ -59,7 +59,7 @@
 					style="width: 360px; height: 370px; float:left; margin-right: 30px;" />
 					</li>
 					<li style="font-size: 35px; list-style: none; margin-bottom: 30px;">
-					<b>※  { user } 님의 회원가입이 정상적으로 완료 되었습니다! ※</b>		
+					<b>※ 회원가입이 정상적으로 완료 되었습니다! ※</b>		
 					</li>
 					<li>
 					<label>저희 풋볼 매니지먼트의 회원으로 가입해주셔서 감사드리며,</label>
@@ -118,6 +118,6 @@
     box-shadow:0 0 0 1px #ebebeb inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 1px 3px 1px rgba(0,0,0,.1);
     background-color:#fff;
 }
-          </style>     
+</style>
 </body>
 </html>

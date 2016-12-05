@@ -35,8 +35,18 @@ public class HomeController {
 		
 		return "index";
 	}
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	  public void ajaxTest() {
-		System.out.println("hhh");
-	  }
+	/*@RequestMapping(value="/doA", method = RequestMethod.GET)
+	public String doA(Locale locale, Model model){
+		
+		System.out.println("doA 실행됨...");
+		return "index";
+	}
+	@RequestMapping(value="/doB", method = RequestMethod.GET)
+	public String doB(Locale locale, Model model){
+		
+		System.out.println("doB 실행됨...");
+		model.addAttribute("result", "DOB RESULT");
+		return "index";
+	}*/
+	
 }

@@ -26,7 +26,7 @@ import com.cz.fms.common.web.PageMaker;
 import com.cz.fms.common.web.SearchCriteria;
 
 @Controller
-@RequestMapping("/sarticle/*")
+@RequestMapping("/board/*")
 public class SearchBulletinController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SearchBulletinController.class);
@@ -35,7 +35,7 @@ public class SearchBulletinController {
 	private BulletinService service;
 
 	// 게시글 페이지 리스트
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/board_list", method = RequestMethod.GET)
 	public void listPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
 		logger.info(cri.toString());
@@ -53,7 +53,7 @@ public class SearchBulletinController {
 	}
 
 	// 게시글 상세
-	@RequestMapping(value = "/readPage", method = RequestMethod.GET)
+	@RequestMapping(value = "/board_read", method = RequestMethod.GET)
 	public void read(@RequestParam("bulletin_num") int bulletin_num, @ModelAttribute("cri") SearchCriteria cri,
 			Model model) throws Exception {
 		logger.info("게시글 상세보기");
@@ -74,11 +74,11 @@ public class SearchBulletinController {
 
 		rttr.addFlashAttribute("msg", "SUCCESS");
 
-		return "redirect:/sarticle/list";
+		return "redirect:/board/board_list";
 	}
 
 	// 게시글 수정화면 이동
-	@RequestMapping(value = "/modifyPage", method = RequestMethod.GET)
+	@RequestMapping(value = "/board_modify", method = RequestMethod.GET)
 	public void modifyPagingGET(int bulletin_num, @ModelAttribute("cri") SearchCriteria cri, Model model)
 			throws Exception {
 		logger.info("게시글 수정화면 이동");
@@ -86,7 +86,7 @@ public class SearchBulletinController {
 	}
 
 	// 게시글 수정
-	@RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
+	@RequestMapping(value = "/board_modify", method = RequestMethod.POST)
 	public String modifyPagingPOST(Bulletin bulletin, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		logger.info("게시글 수정");
 		logger.info(cri.toString());
@@ -101,17 +101,17 @@ public class SearchBulletinController {
 
 		logger.info(rttr.toString());
 
-		return "redirect:/sarticle/list";
+		return "redirect:/board/board_list";
 	}
 
 	// 게시글 등록 화면 이동
-	@RequestMapping(value = "/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/board_write", method = RequestMethod.GET)
 	public void registGET() throws Exception {
 		logger.info("게시글 등록화면 이동");
 	}
 
 	// 게시글 등록
-	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/board_write", method = RequestMethod.POST)
 	public String registPOST(Bulletin bulletin, RedirectAttributes rttr) throws Exception {
 		logger.info("게시글 등록");
 		logger.info(bulletin.toString());
@@ -120,7 +120,7 @@ public class SearchBulletinController {
 
 		rttr.addFlashAttribute("msg", "SUCCESS");
 
-		return "redirect:/sarticle/list";
+		return "redirect:/board/board_list";
 	}
 
 	// 파일처리 : 로딩

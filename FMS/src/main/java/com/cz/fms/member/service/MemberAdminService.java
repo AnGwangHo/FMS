@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.cz.fms.member.domain.Criteria;
 import com.cz.fms.member.domain.MemberAdmin;
-import com.cz.fms.member.domain.SearchCriteria;
+import com.cz.fms.member.domain.SearchCriteriaMember;
 
 public interface MemberAdminService {
 
@@ -27,8 +27,8 @@ public interface MemberAdminService {
 	public int listCountCriteria(Criteria cri) throws Exception;
 
 	// 검색 + 페이징처리
-	public List<MemberAdmin> listSearchCriteria(SearchCriteria cri) throws Exception;
+	public List<MemberAdmin> listSearchCriteria(SearchCriteriaMember cri) throws Exception;
 
 	// 검색 페이징처리
-	public int listSearchCount(SearchCriteria cri) throws Exception;
+	public int listSearchCount(SearchCriteriaMember cri) throws Exception;
 }

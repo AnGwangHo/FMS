@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cz.fms.member.domain.Criteria;
 import com.cz.fms.member.domain.MemberAdmin;
-import com.cz.fms.member.domain.SearchCriteria;
+import com.cz.fms.member.domain.SearchCriteriaMember;
 
 @Repository
 public class MemberAdminDaoImpl implements MemberAdminDao {
@@ -67,14 +67,14 @@ public class MemberAdminDaoImpl implements MemberAdminDao {
 
 	// 검색 + 페이징 처리
 	@Override
-	public List<MemberAdmin> memberlistSearch(SearchCriteria cri) throws Exception {
+	public List<MemberAdmin> memberlistSearch(SearchCriteriaMember cri) throws Exception {
 		// TODO Auto-generated method stub
 		return session.selectList(namespace + ".listSearch", cri);
 	}
 
 	// 검색 + 페이징 처리
 	@Override
-	public int listSearchCount(SearchCriteria cri) throws Exception {
+	public int listSearchCount(SearchCriteriaMember cri) throws Exception {
 		// TODO Auto-generated method stub
 		return session.selectOne(namespace + ".listSearchCount", cri);
 	}
