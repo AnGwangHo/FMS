@@ -74,14 +74,14 @@
         
         <!-- Home -->
         
-        <form role="form" action="modifyPage" method="post">
+        <form role="form" action="board_modify" method="post">
         
             <input type='hidden' name='bulletin_num' value ="${bulletin.bulletin_num}">
-        	<input type="hidden" name="page" value="${cri.page }">
-        	<input type="hidden" name="perPageNum" value="${cri.perPageNum }">
-        	<input type="hidden" name="searchType" value="${cri.searchType }">
-        	<input type="hidden" name="keyword" value="${cri.keyword }">
-        	
+           <input type="hidden" name="page" value="${cri.page }">
+           <input type="hidden" name="perPageNum" value="${cri.perPageNum }">
+           <input type="hidden" name="searchType" value="${cri.searchType }">
+           <input type="hidden" name="keyword" value="${cri.keyword }">
+           
         
         
          
@@ -95,7 +95,7 @@
    
                      <tr>
                         <td class="active">작성자</td>
-                        <td ><label style="color: white">${bulletin.member_num }</label></td>
+                        <td ><label style="color: white">${member.member_id }</label></td>
                         <td class="active">작성일</td>
                         <td ><label style="color: white">${bulletin.bulletin_date }</label></td>
                      </tr>
@@ -127,30 +127,30 @@
             </form>
 <script>
   
-	
-	$(document).ready(function(){
-		
-		var formObj = $("form[role='form']");
-		
-		console.log(formObj);
-		
-		$(".btn-warning").on("click", function(){
-			self.location = "/board/board_list?page=${cri.page}&perPageNum=${cri.perPageNum}"
-					+ "&searchType=${cri.searchType}&keyword=${cri.keyword}";
-		});
-		
-		$(".btn-primary").on("click", function(){
-			formObj.submit();
-		});
-		
-		/*  
-		// 수정된 제목 test
-		var test = $("input[name='bulletin_title']").attr("value");
-		alert(test); 
-		*/
-		
-	});
-	
+   
+   $(document).ready(function(){
+      
+      var formObj = $("form[role='form']");
+      
+      console.log(formObj);
+      
+      $(".btn-warning").on("click", function(){
+         self.location = "/board/board_list?page=${cri.page}&perPageNum=${cri.perPageNum}"
+               + "&searchType=${cri.searchType}&keyword=${cri.keyword}";
+      });
+      
+      $(".btn-primary").on("click", function(){
+         formObj.submit();
+      });
+      
+      /*  
+      // 수정된 제목 test
+      var test = $("input[name='bulletin_title']").attr("value");
+      alert(test); 
+      */
+      
+   });
+   
 </script>
             
             
@@ -258,25 +258,25 @@
   <!-- 
   <script>
   
-	
-	$(document).ready(function(){
-		
-		var formObj = $("form[role='form']");
-		
-		console.log(formObj);
-		
-		$(".btn-warning").on("click", function(){
-			self.location = "/article/listPage?page=${cri.page}&perPageNum=${cri.perPageNum}";
-		});
-		
-		$(".btn-primary").on("click", function(){
-			formObj.submit();
-		});
-		
-	});
-	
-	</script> 
-	-->
+   
+   $(document).ready(function(){
+      
+      var formObj = $("form[role='form']");
+      
+      console.log(formObj);
+      
+      $(".btn-warning").on("click", function(){
+         self.location = "/article/listPage?page=${cri.page}&perPageNum=${cri.perPageNum}";
+      });
+      
+      $(".btn-primary").on("click", function(){
+         formObj.submit();
+      });
+      
+   });
+   
+   </script> 
+   -->
   
   
   <jsp:include page="../include/footer.jsp"/>

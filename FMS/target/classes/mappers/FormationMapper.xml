@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- :: 루트 엘리먼트이름 -->
+                        
+<!-- 네임스페이스(사용영역) 설정 -->
+<mapper namespace="com.cz.fms.formation">
+	
+	<select id="findmembernum" resultType="int">
+	SELECT member_num
+	FROM member
+	WHERE member_name=#{member_name}
+	</select>
+	
+	<select id="findformationnum" resultType="int">
+	SELECT formation_num
+	FROM formation
+	WHERE formation_path=#{formation_path}
+	</select>
+	
+	<select id="findpositionnum" resultType="int">
+	SELECT position_num
+	FROM position
+	WHERE position_name=#{position_name}
+	</select>
+	
+	<select id="findschedulenum" resultType="int">
+	SELECT schedule_num
+	FROM schedule
+	WHERE schedule_title=#{schedule_title}
+	</select>
+	
+	<insert id="tacticsadd">
+	INSERT INTO Tactics(tactics_num, 
+                    schedule_num,
+                    formation_num, 
+                    tactics_half)
+	VALUES          (tactics_num_seq.nextval,
+					#{schedule_num},
+                    #{formation_num},
+                    #{tactics_half}
+                    )
+	
+	</insert>
+	
+	<select id="findtacticsnum" resultType="int">
+	SELECT tactics_num
+	FROM tactics
+	WHERE formation_num=#{formation_num}
+	AND tactics_half =#{tactics_half}
+	AND schedule_num =#{schedule_num}
+	</select>
+	
+	
+	<insert id="regularstarteradd" >
+	INSERT INTO regularstarter(tactics_num, 
+                           member_num,
+                           position_num, 
+                           regularstarter_half,
+                           regularstarter_location)
+	VALUES                     (#{tactics_num},
+                              #{member_num},
+                              #{position_num},
+                              #{regularstarter_half},
+                              #{regularstarter_location})
+	
+	</insert>
+	
+	<delete id="tacticsdelete">
+	DELETE
+	FROM REGULARSTARTER
+	WHERE tactics_num=#{tactics_num}
+
+	</delete>
+	
+	<delete id="regularstarterdelete">
+	DELETE 
+	FROM tactics
+	WHERE tactics_num=#{tactics_num}
+	
+	</delete>
+	
+	<!-- dao생성해야됨 -->
+	<select id="regularstarterList" resultType="com.cz.fms.regularstarter.domain.Regularstarter">
+	SELECT *
+	FROM regularstarter
+	WHERE tactics_num=#{tactics_num}
+	
+	</select>
+	
+	<select id="tactcisget" resultType="com.cz.fms.tactics.domain.Tactics">
+	SELECT *
+	FROM tactics
+	WHERE tactics_num=#{tactics_num}
+	
+	</select>
+	
+	<select id="scheduleget" resultType="com.cz.fms.schedule.domain.Schedule">
+	SELECT *
+	FROM schedule
+	WHERE schedule_num=#{schedule_num}
+	
+	</select>
+	
+	<select id="memberget" resultType="com.cz.fms.member.domain.Member">
+	SELECT *
+	FROM member
+	WHERE member_num=#{member_num}
+	
+	</select>
+	
+	<select id="regularstarterget" resultType="com.cz.fms.regularstarter.domain.Regularstarter">
+	SELECT *
+	FROM REGULARSTARTER
+	WHERE member_num = #{member_num}
+	AND tactics_num = #{tactics_num}
+	
+	</select>
+	
+	<!-- 11월 30일 이후로 나오는 일정(테스트용) -->
+	<select id="scheduleList" resultType="hashMap">
+	SELECT  tactics_num,  
+        formation_num, 
+        tactics_half, 
+        schedule_title,
+        to_char(to_date(schedule_date, 'YY/MM/DD'),'YYYY-MM-DD') schedule_date
+	FROM tactics t
+	JOIN (select *
+	FROM schedule
+	WHERE to_char(to_date(schedule_date, 'YY/MM/DD'),'YYYY-MM-DD')>= 
+      to_char(to_date('2016-11-30', 'YY/MM/DD'),'YYYY-MM-DD'))s
+      ON t.schedule_num = s.schedule_num
+	</select>
+	
+	<!-- 현재날짜 이후로 나오는 일정 (기본) -->
+	<!-- 
+	<select id="scheduleList" resultType="hashMap">
+	SELECT  tactics_num,  
+        formation_num, 
+        tactics_half, 
+        schedule_title,
+        to_char(to_date(schedule_date, 'YY/MM/DD'),'YYYY-MM-DD') schedule_date
+	FROM tactics t
+	JOIN (select *
+	FROM schedule
+	WHERE to_char(to_date(schedule_date, 'YY/MM/DD'),'YYYY-MM-DD')>= 
+      to_char(to_date(sysdate, 'YY/MM/DD'),'YYYY-MM-DD'))s
+      ON t.schedule_num = s.schedule_num
+	
+	</select>
+	 -->
+	 
+	 <update id="gradeUpdate">
+	UPDATE regularstarter
+	SET    regularstarter_grade= #{regularstarter_grade}
+	WHERE  tactics_num = #{tactics_num}
+	AND member_num = #{member_num}
+	 
+	 
+	 </update>
+	 
+	 <update id="commentUpdate">
+	UPDATE regularstarter
+	SET    regularstarter_comment= #{regularstarter_comment}
+	WHERE  tactics_num = #{tactics_num}
+	AND	 member_num = #{member_num}
+	 
+	 </update>
+</mapper>

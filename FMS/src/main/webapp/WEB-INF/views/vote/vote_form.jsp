@@ -71,9 +71,11 @@ $(function() {
 
 <!-- 본문내용! -->
 <header role="page-title">
-    <h2 align="center" style="margin-right: 90px; margin-bottom: 40px; color: white;"><span class="fa fa-futbol-o" style="margin-right: 20px;"></span>투표페이지(Voting)</h2>
+      <!-- title image -->
+        
 </header>
     <div align="center" style="margin-bottom: 200px;">
+     <img src="/html/images/vote.png" style="margin-top:20px; margin-bottom:50px; height: 50px">
     <ul>
 <li>
 <img src="/html/member_images/park.jpg" class="img-circle img-responsive" alt="Conxole Admin" width="170" height="150" style="float: left; margin-left: 550px; border: 8px solid black;" />

@@ -97,7 +97,11 @@ $(function(){
 
 <!-- 본문내용! -->
 <div class="container" style="margin-bottom: 100px;">
-    <h3 style="color: white;"><i class="fa fa-caret-square-o-down" aria-hidden="true" style="margin-right: 20px;"></i>회원 목록</h3>
+  <!-- title image -->
+<div align="center">
+	<img src="/html/images/userlist.png" style="margin-top:20px; margin-bottom:20px; height: 50px">
+</div>
+
     <hr>
     <div class="row">
         <div class="panel panel-primary filterable">

@@ -100,11 +100,14 @@
 				
 				 <c:forEach items="${memberList}" var="MemberAdmin"> 
 				    <tr style="color: white;">
-				      <td><img src="/html/images/test_image.jpg" style="height: 55px"></td>
+				      <td>
+						<img id="imagePreview" name="imagePreview" style=" height: 55px; border: 2px solid black;" 
+						src="http://localhost/memberdisplayFile?fileName=${MemberAdmin.member_profile_image}"/>
+					  </td>
 				      <td style="font-size: 15pt; font-style: italic;"><a href='/admin/member_read?member_num=${MemberAdmin.member_num}'>${MemberAdmin.member_id}</a></td>
 				      <td>${MemberAdmin.member_name}</td>
 				      <td >${MemberAdmin.member_phone}</td>
-				      <td>${MemberAdmin.member_regdate}</td>
+				      <td><fmt:formatDate pattern="yyyy-MM-dd" value="${MemberAdmin.member_regdate}" /></td>
 					  <td>
 					  	<button onclick="javascript:location.href='/admin/member_modify?member_num=${MemberAdmin.member_num}'" class="btn btn-info btn-sm  btn3d"><span class="glyphicon glyphicon-edit"></span> 수정</button>
 					  </td>
@@ -261,6 +264,75 @@
 	}
 </script>
 
+<!-- 이미지 업로드 스크립트 -->
+<script type="text/javascript">
+$(function() {
+	$("#profile").change(function() {
+		readUploadImage(this);
+	});
+/* ---------------------파일첨부 스크립트----------------------------- */
+		   var member_num = ${MemberAdmin.member_num};
+		   console.log("멤버넘버"+${MemberAdmin.member_num});
+		   var template = Handlebars.compile($("#member_profile_image").html());
+		   
+		   $.getJSON("/getImage/"+member_num, function(list){
+		      $(list).each(function(){
+		         var fileInfo = getFileInfo(this);             
+		         var html = template(fileInfo);
+		         console.log(html);
+		          $(".uploadedList").append(html);
+		       });
+		   });
+		   
+		   $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+			      
+			      var fileLink = $(this).attr("href");
+			      
+			      if(checkImageType(fileLink)){
+			         
+			         event.preventDefault();
+			               
+			         var imgTag = $("#popup_img");
+			         imgTag.attr("src", fileLink);
+			         
+			         $(".popup").show('slow');
+			         imgTag.addClass("show");      
+			      }   
+			   });
+			   
+			   $("#popup_img").on("click", function(){
+			      $(".popup").hide('slow');
+			   }); 
+});
+
+function readUploadImage(inputObject) {
+	/*
+	 * 브라우저에서 FileReader가 지원되는지 확인하기 위해 
+	 * window.File && window.FileReader 실행 
+	 */
+	if (window.File && window.FileReader) {
+		/* 입력된 파일이 1개 이상 있는지 확인 */
+		if (inputObject.files && inputObject.files[0]) {
+			/* 이미지 파일인지 체크 */
+			if (!(/image/i).test(inputObject.files[0].type)) {
+				alert("이미지 파일을 선택해 주세요!");
+				return false;
+			}
+			/* FileReader 를 준비 한다. */
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				/* reader가 다 읽으면 imagePreview에 뿌려기 */
+				$('#imagePreview').attr('src', e.target.result);
+			}
+			/* input file에 있는 파일 하나를 읽어온다. */
+			reader.readAsDataURL(inputObject.files[0]);
+		}
+	} else {
+		alert("미리보기 안되요. 브라우저를 업그레이드하세요.");
+	}
+}
+</script>
+<!-- 이미지 업로드 스크립트끝 -->
 
 </body>
 </html>

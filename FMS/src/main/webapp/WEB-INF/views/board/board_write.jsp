@@ -72,21 +72,21 @@
              
             <div class="table-responsive">
                   <!-- ================================= -->
-				  <form id="registerForm" action="write" method="post">
-				  
-						<!-- 예시히든값/회원가입+아이디로그인 연동되면 바꿀 것! -->
-						<input type='hidden' name='member_num' value="${sessionScope.login.member_num}">
-						<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★ -->				 
-				
-				  <!-- 데이터 TABLE INPUT 부분 시작 -->
+              <form id="registerForm" action="board_write" method="post">
+              
+                  <!-- 예시히든값/회원가입+아이디로그인 연동되면 바꿀 것! -->
+                  <input type='hidden' name='member_num' value="${sessionScope.login.member_num}">
+                  <!-- ★★★★★★★★★★★★★★★★★★★★★★★★★ -->             
+            
+              <!-- 데이터 TABLE INPUT 부분 시작 -->
                   <table class="table table-bordered  table-hover ">
-                  	  <tr>
+                       <tr>
                         <td class="active">게시글 종류</td>
                         <td colspan="3">
-                        	<select name="bulletintype_num" class="form-control">
-                        		<option value="1">공지사항</option>
-                        		<option value="2">자유게시판</option>
-                        	</select>
+                           <select name="bulletintype_num" class="form-control">
+                              <option value="1">공지사항</option>
+                              <option value="2">자유게시판</option>
+                           </select>
                         </td>
                      </tr>
                      <tr>
@@ -101,7 +101,7 @@
                         
                        <!-- 첨부파일을 위한 input file -->
                         <td>
-							 <input type="file" name="bulletin_attachment" id="bulletin_attachment"> 
+                      <input type="file" name="bulletin_attachment" id="bulletin_attachment"> 
                         </td>
                      </tr>
       
@@ -146,82 +146,82 @@
 <!-- =======================================================================================  -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-	
-	<!-- 파일등록을 위한 SCRIPT 처리 시작-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-	<script id="template" type="text/x-handlebars-template">
+   
+   <!-- 파일등록을 위한 SCRIPT 처리 시작-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+   <script id="template" type="text/x-handlebars-template">
 <li>
 <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
   <div class="mailbox-attachment-info">
-	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
-	<a href="{{fullName}}" 
+   <a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+   <a href="{{fullName}}" 
      class="btn btn-default btn-xs pull-right delbtn"><i class="fa fa-fw fa-remove"></i></a>
-	</span>
+   </span>
   </div>
 </li>             
-	</script>    
-	
-	<!-- 사진 업로드를 위한 Ajax -->
-	<script>
-	   var file = document.querySelector('#bulletin_attachment');
-	   var changed = false;
+   </script>    
+   
+   <!-- 사진 업로드를 위한 Ajax -->
+   <script>
+      var file = document.querySelector('#bulletin_attachment');
+      var changed = false;
 
-	   file.onchange = function (event) {
-	       var fileList = file.files ;
-		  /* if(!checkImageType(fileList[0].name))   {
-	         alert("이미지 파일만 올려주세요.");
-	         return;
-	      } */
-	      //var oldImgName = $(".uploadedList").find("a").attr("name");
-	       
-	       // 서버에 파일 전송
-	       var formData = new FormData();
-	       formData.append("file", fileList[0]);
+      file.onchange = function (event) {
+          var fileList = file.files ;
+        /* if(!checkImageType(fileList[0].name))   {
+            alert("이미지 파일만 올려주세요.");
+            return;
+         } */
+         //var oldImgName = $(".uploadedList").find("a").attr("name");
+          
+          // 서버에 파일 전송
+          var formData = new FormData();
+          formData.append("file", fileList[0]);
 
-	       $.ajax({
-	         url: "/uploadAjax",
-	         data: formData,
-	         dataType: "text",
-	         processData: false, // 데이터를 query string으로 변환할지 결정
-	         contentType: false, // 파일 전송을 위해 타입 변경
-	         type: "POST",
-	         success: function(data)   {
-	            if(checkImageType(data))   {
-	               var fileInfo = getFileInfo(data);
-	               var html = template(fileInfo);
-	               changed = true;
-	               console.log("변경된 이미지: " + fileInfo.fullName);
-	            }
-	            $(".uploadedList").empty().html(html);
-	         }
-	      });
+          $.ajax({
+            url: "/uploadAjax",
+            data: formData,
+            dataType: "text",
+            processData: false, // 데이터를 query string으로 변환할지 결정
+            contentType: false, // 파일 전송을 위해 타입 변경
+            type: "POST",
+            success: function(data)   {
+               if(checkImageType(data))   {
+                  var fileInfo = getFileInfo(data);
+                  var html = template(fileInfo);
+                  changed = true;
+                  console.log("변경된 이미지: " + fileInfo.fullName);
+               }
+               $(".uploadedList").empty().html(html);
+            }
+         });
 
-	       // 기존 이미지가 아니고, 다른 이미지에서 또 다시 변경했을 경우
-	      //if(changed)   {
-	      //   deleteFile(oldImgName);
-	      //}
-	   };
-	</script>
-	
-	<script>
-	var template = Handlebars.compile($("#template").html());
-	
-	$("#registerForm").submit(function(event){
-		event.preventDefault();
-		
-		var that = $(this);
-		
-		var str ="";
-		$(".uploadedList .delbtn").each(function(index){
-			 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href") +"'> ";
-		});
-		
-		that.append(str);
+          // 기존 이미지가 아니고, 다른 이미지에서 또 다시 변경했을 경우
+         //if(changed)   {
+         //   deleteFile(oldImgName);
+         //}
+      };
+   </script>
+   
+   <script>
+   var template = Handlebars.compile($("#template").html());
+   
+   $("#registerForm").submit(function(event){
+      event.preventDefault();
+      
+      var that = $(this);
+      
+      var str ="";
+      $(".uploadedList .delbtn").each(function(index){
+          str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href") +"'> ";
+      });
+      
+      that.append(str);
 
-		that.get(0).submit();
-	});
-	</script>
-	<!-- 파일 SCRIPT 처리 끝-->
+      that.get(0).submit();
+   });
+   </script>
+   <!-- 파일 SCRIPT 처리 끝-->
 
 
 

@@ -54,7 +54,7 @@
 <!-- file:///D:/kosta126/workspace/FMS/src/main/webapp/resources/images/member/uu.gif -->
 	<!-- 본문내용! -->
 	<!-- 4번 form 추가--->
-	<div style="margin-left: 60px; margin-bottom: 200px; margin-top: 30px;">
+	<div style="margin-left: 60px; margin-bottom: 100px; margin-top: 30px;">
 	<ul id=table><li class="alert alert-info" style="margin-bottom: 50px;">
 		<h1 align="center"><span class="fa fa-street-view" style="margin-right: 20px;"></span>회원 상세보기</h1>
 		</li>	
@@ -162,7 +162,7 @@
 						</select>
 				</li>			
 				<li class="info" style="margin-bottom: 10px; ">
-					<label class="title_info" for="id_info" style="font-size: 20px;">메인 발 : </label>
+					<label class="title_info" for="id_info" style="font-size: 20px; margin-right: 62px">메인 발 : </label>
 					<c:choose>
 							<c:when test="${Member_info.member_foot==0}">
 				<label class="btn btn-primary active">
@@ -231,9 +231,9 @@
 		<!-- 메인내용 끝 -->
 				<li class="info" style="list-style: none; margin-left: 68%; margin-top: 40px; margin-bottom: 30px;">
 				  		<!-- 수정버튼 -->
-				  		<button type="submit" class="btn btn-info btn-sm btn3d" style="width: 100px;"><span class="glyphicon glyphicon-edit"></span>수정</button>
+				  		<button type="submit" class="btn btn-info btn-sm btn3d" style="width: 100px;"><span class="glyphicon glyphicon-edit"></span> 수정</button>
 				  		<!-- 삭제버튼 -->
-				  		<a data-toggle="modal" href="#leaveModal" class="btn btn-danger btn-sm btn3d" style="width: 100px;"><span class="glyphicon glyphicon-remove-circle"></span>탈퇴</a>	
+				  		<a data-toggle="modal" href="#leaveModal" class="btn btn-danger btn-sm btn3d" style="width: 100px;"><span class="glyphicon glyphicon-remove-circle"></span> 탈퇴</a>	
 				</li>
 				</form>			
 			</ul>			

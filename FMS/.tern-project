@@ -1,5 +1,12 @@
 {
+  "ecmaVersion": 5,
   "plugins": {
+    "chrome-apps": {
+      
+    },
+    "chrome-extension": {
+      
+    },
     "guess-types": {
       
     },
@@ -11,9 +18,7 @@
     }
   },
   "libs": [
-    "ecma5",
     "browser",
     "jquery"
-  ],
-  "ecmaVersion": 6
+  ]
 }

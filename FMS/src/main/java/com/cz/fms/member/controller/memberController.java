@@ -64,7 +64,7 @@ public class memberController {
       System.out.println(vo);
       model.addAttribute("memberVo", vo);
       
-      return "index";
+      return "/member/loading";
    }
 
    /**

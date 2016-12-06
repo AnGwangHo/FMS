@@ -19,38 +19,38 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter{
-	
-	private static final String LOGIN = "login";
+   
+   private static final String LOGIN = "login";
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+   private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
-	@Override  /** MemberController 에서 MemberVo라는 이름으로 객체를 담아둔 상태로, 이 상태를 체크해서 HttpSession에 저장한다. */
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{	
-		HttpSession session = request.getSession();
-		ModelMap modelMap =  modelAndView.getModelMap();
-		Object memberVo = modelMap.get("memberVo");
-		//logger.info(memberVo.toString());
-		if(memberVo != null){		
-			logger.info("새로운 로그인이 성공하였습니다 new login success!");
-			session.setAttribute(LOGIN, memberVo);
-			//response.sendRedirect("/");
-			Object dest = session.getAttribute("dest");
-			
-			response.sendRedirect(dest != null ? (String)dest:"/");
-		}
-		
-	}
-	
-	
-	@Override   /** preHandled 에서는 HttpSession 에 남아있는 정보를 삭제하기위해 만들었다. */
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
-		HttpSession session =  request.getSession();
-		
-		if(session.getAttribute(LOGIN) != null){
-			logger.info("clear login data before");
-			session.removeAttribute(LOGIN);
-			}
-		return true;
-	}	
+   @Override  /** MemberController 에서 MemberVo라는 이름으로 객체를 담아둔 상태로, 이 상태를 체크해서 HttpSession에 저장한다. */
+   public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{   
+      HttpSession session = request.getSession();
+      ModelMap modelMap =  modelAndView.getModelMap();
+      Object memberVo = modelMap.get("memberVo");
+      //logger.info(memberVo.toString());
+      if(memberVo != null){      
+         logger.info("새로운 로그인이 성공하였습니다 new login success!");
+         session.setAttribute(LOGIN, memberVo);
+         //response.sendRedirect("/");
+         Object dest = session.getAttribute("dest");
+         
+         response.sendRedirect(dest != null ? (String)dest:"/member_loading");
+      }
+      
+   }
+   
+   
+   @Override   /** preHandled 에서는 HttpSession 에 남아있는 정보를 삭제하기위해 만들었다. */
+   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+      
+      HttpSession session =  request.getSession();
+      
+      if(session.getAttribute(LOGIN) != null){
+         logger.info("clear login data before");
+         session.removeAttribute(LOGIN);
+         }
+      return true;
+   }   
 }

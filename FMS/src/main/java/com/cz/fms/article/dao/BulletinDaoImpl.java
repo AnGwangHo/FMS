@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.cz.fms.article.domain.Bulletin;
 import com.cz.fms.common.web.Criteria;
 import com.cz.fms.common.web.SearchCriteria;
+import com.cz.fms.member.domain.Member;
 
 @Repository
 public class BulletinDaoImpl implements BulletinDao {
@@ -120,6 +121,18 @@ public class BulletinDaoImpl implements BulletinDao {
 	public void updateViewCount(int bulletin_num) throws Exception {
 		session.update(namespace + ".updateViewCount", bulletin_num);
 
+	}
+
+	// Member 얻어오기
+	@Override
+	public List<Member> getMember(Integer member_num) throws Exception {
+		return session.selectList(namespace + ".getMember", member_num);
+	}
+
+	// Member_name 얻어오기
+	@Override
+	public Member getMember_id(Integer member_num) throws Exception {
+		return session.selectOne(namespace + ".getMemberName", member_num);
 	}
 
 }

@@ -43,17 +43,21 @@
 		</beans:constructor-arg>
 	</beans:bean>
 
-	<!-- 인터셉터 로그인처리 by.영묵 -->
 	<beans:bean id="loginInterceptor" class="com.cz.fms.interceptor.LoginInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
 			<mapping path="/member/member_loginPost" />
 			<beans:ref bean="loginInterceptor" />
-
 		</interceptor>
+		<!-- 로그인 확인을 할곳을 설정하는 장소 -->
+		<!-- <interceptor> <mapping path="/member/member_result"/> <beans:ref bean="authInterceptor"/> 
+			</interceptor> -->
 	</interceptors>
 
-	<!-- @Component, @Controller, @Service, @Repository 등의 어노테이션 사용을 위한 빈스캐너 등록 -->
+	<!-- @Component, @Controller, @Service, @Repository 등의 어노테이션 사용을 위한 빈스캐너 
+		등록 -->
 	<context:component-scan base-package="com.cz.fms" />
+
+
 
 </beans:beans>

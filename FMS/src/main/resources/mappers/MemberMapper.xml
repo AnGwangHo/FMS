@@ -91,6 +91,6 @@
 	<select id="getImage" resultType="string">
 		SELECT member_profile_image 
 		FROM   member 
-		WHERE  member_num = # {member_num} 
+		WHERE  member_num = #{member_num} 
 	</select>
 </mapper>

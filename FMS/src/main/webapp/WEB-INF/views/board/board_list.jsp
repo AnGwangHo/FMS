@@ -62,8 +62,8 @@
   <!-- 본문 -->
 <div class="container">
    <div class="tab-content" align="center">
-		<!-- title image -->
-	   	<img src="/html/images/bulletin.png" style="margin-top:20px; margin-bottom:50px; height: 50px">
+      <!-- title image -->
+         <img src="/html/images/bulletin.png" style="margin-top:20px; margin-bottom:50px; height: 50px">
     
       <table class="table table-bordered table-hover">
             <tr style="color: white">
@@ -74,23 +74,23 @@
               <th style="width : 10%">작성일</th>
               <th style="width : 5%">조회수</th>
             </tr>
-            <c:forEach items="${list}" var="bulletin">
+            <c:forEach items="${sendlist}" var="bulletin">
           <tr>
-            <td>${bulletin.bulletin_num}</td>
+            <td>${bulletin[0]}</td>
             <td>
-	            <c:choose>
-	            <c:when test="${bulletin.bulletintype_num==1}">
-	            공지사항
-	            </c:when>
-	            <c:when test="${bulletin.bulletintype_num==2}">
-	            자유게시판
-	            </c:when>
-	            </c:choose>
+               <c:choose>
+               <c:when test="${bulletin[1]==1}">
+               공지사항
+               </c:when>
+               <c:when test="${bulletin[1]==2}">
+               자유게시판
+               </c:when>
+               </c:choose>
             </td>
-            <td><a href='/board/board_read${pageMaker.makeSearch(pageMaker.cri.page) }&bulletin_num=${bulletin.bulletin_num}'>${bulletin.bulletin_title}<strong>[${bulletin.reply_count }]</strong></a></td>
-            <td>${bulletin.member_num}</td>
-            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${bulletin.bulletin_date}" /></td>
-            <td><span class="badge bg-red">${bulletin.bulletin_hitcount }</span></td>
+            <td><a href='/board/board_read${pageMaker.makeSearch(pageMaker.cri.page) }&bulletin_num=${bulletin[0]}'>${bulletin[2]}<strong>[${bulletin[6]}]</strong></a></td>
+            <td>${bulletin[3]}</td>
+            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${bulletin[4]}" /></td>
+            <td><span class="badge bg-red">${bulletin[5]}</span></td>
           </tr>
          </c:forEach>
              
@@ -98,64 +98,64 @@
        <!-- 페이지 *************************************-->
        <div class="box-footer">
 
-					<div class="text-center">
-						<ul class="pagination">
+               <div class="text-center">
+                  <ul class="pagination">
 
-							<c:if test="${pageMaker.prev}">
-								<li><a href="board_list${pageMaker.makeSearch(pageMaker.startPage - 1)}">&laquo;</a></li>
-							</c:if>
+                     <c:if test="${pageMaker.prev}">
+                        <li><a href="board_list${pageMaker.makeSearch(pageMaker.startPage - 1)}">&laquo;</a></li>
+                     </c:if>
 
-							<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="idx">
-								<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-									<a href="board_list${pageMaker.makeSearch(idx)}">${idx}</a>
-								</li>
-							</c:forEach>
+                     <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="idx">
+                        <li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+                           <a href="board_list${pageMaker.makeSearch(idx)}">${idx}</a>
+                        </li>
+                     </c:forEach>
 
-							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-								<li><a href="board_list${pageMaker.makeSearch(pageMaker.endPage +1)}">&raquo;</a></li>
-							</c:if>
+                     <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+                        <li><a href="board_list${pageMaker.makeSearch(pageMaker.endPage +1)}">&raquo;</a></li>
+                     </c:if>
 
-						</ul>
-					</div>
-		</div>
-		<!-- /.box-footer-->
-		<!-- ************************************* -->
-		
-		<!-- 검색부분 **************-->
-		<div class='box-body' class="form-control">
+                  </ul>
+               </div>
+      </div>
+      <!-- /.box-footer-->
+      <!-- ************************************* -->
+      
+      <!-- 검색부분 **************-->
+      <div class='box-body' class="form-control">
 
-		<select name="searchType" class="select">
-			<option value="n"
-				<c:out value="${cri.searchType == null?'selected':''}"/>>
-				선택</option>
-			<option value="t"
-				<c:out value="${cri.searchType eq 't'?'selected':''}"/>>
-				제목</option>
-			<option value="c"
-				<c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
-				내용</option>
-			<option value="w"
-				<c:out value="${cri.searchType eq 'w'?'selected':''}"/>>
-				작성자</option>
-			<!--  
-			<option value="tc"
-				<c:out value="${cri.searchType eq 'tc'?'selected':''}"/>>
-				Title OR Content</option>
-			<option value="cw"
-				<c:out value="${cri.searchType eq 'cw'?'selected':''}"/>>
-				Content OR Writer</option>
-			<option value="tcw"
-				<c:out value="${cri.searchType eq 'tcw'?'selected':''}"/>>
-				Title OR Content OR Writer</option>
-			-->	
-		</select> 
-		<input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
-		<button class="btn btn-info btn-xs" id='searchBtn'>검색</button>
-		<!-- <button id='newBtn'>New Board</button> -->
-	
-	 </div>
-	 <!-- ************** -->
-	 
+      <select name="searchType" class="select">
+         <option value="n"
+            <c:out value="${cri.searchType == null?'selected':''}"/>>
+            선택</option>
+         <option value="t"
+            <c:out value="${cri.searchType eq 't'?'selected':''}"/>>
+            제목</option>
+         <option value="c"
+            <c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
+            내용</option>
+         <option value="w"
+            <c:out value="${cri.searchType eq 'w'?'selected':''}"/>>
+            작성자</option>
+         <!--  
+         <option value="tc"
+            <c:out value="${cri.searchType eq 'tc'?'selected':''}"/>>
+            Title OR Content</option>
+         <option value="cw"
+            <c:out value="${cri.searchType eq 'cw'?'selected':''}"/>>
+            Content OR Writer</option>
+         <option value="tcw"
+            <c:out value="${cri.searchType eq 'tcw'?'selected':''}"/>>
+            Title OR Content OR Writer</option>
+         -->   
+      </select> 
+      <input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
+      <button class="btn btn-info btn-xs" id='searchBtn'>검색</button>
+      <!-- <button id='newBtn'>New Board</button> -->
+   
+    </div>
+    <!-- ************** -->
+    
       <div align="right" style="margin-right: 10px">
          <button class="btn btn-primary  btn3d" id="newBtn">
             <span class="glyphicon glyphicon-pencil"></span> 글작성  
@@ -181,11 +181,11 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 
 <script>
-	var result = '${msg}';
-	
-	if(result == 'success'){
-		alert("처리가 완료되었습니다.");
-	}
+   var result = '${msg}';
+   
+   if(result == 'success'){
+      alert("처리가 완료되었습니다.");
+   }
 </script>
 
 <script src="/html/js/jquery.min.js" type="text/javascript"></script> 
@@ -216,26 +216,26 @@
 <script src="/html/js/typed.js" type="text/javascript"></script> 
 <script>
     $(function(){
-    	
-    	var result = '${msg}';
+       
+       var result = '${msg}';
 
-    	if (result == 'SUCCESS') {
-    		alert("처리가 완료되었습니다.");
-    	}
-    	/*
-    	$(".pagination li a").on("click", function(event){
-    		
-    		event.preventDefault(); 
-    		
-    		var targetPage = $(this).attr("href");
-    		
-    		var jobForm = $("#jobForm");
-    		jobForm.find("[name='page']").val(targetPage);
-    		jobForm.attr("action","/article/listPage").attr("method", "get");
-    		jobForm.submit();
-    	}); 
-		*/
-		
+       if (result == 'SUCCESS') {
+          alert("처리가 완료되었습니다.");
+       }
+       /*
+       $(".pagination li a").on("click", function(event){
+          
+          event.preventDefault(); 
+          
+          var targetPage = $(this).attr("href");
+          
+          var jobForm = $("#jobForm");
+          jobForm.find("[name='page']").val(targetPage);
+          jobForm.attr("action","/article/listPage").attr("method", "get");
+          jobForm.submit();
+       }); 
+      */
+      
         $("#typed").typed({
             // strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
             stringsElement: $('#typed-strings'),
@@ -261,28 +261,28 @@
 
     </script>
     <script>
-	$(document).ready(
-			function() {
+   $(document).ready(
+         function() {
 
-				$('#searchBtn').on(
-						"click",
-						function(event) {
+            $('#searchBtn').on(
+                  "click",
+                  function(event) {
 
-							self.location = "board_list"
-									+ '${pageMaker.makeQuery(1)}'
-									+ "&searchType="
-									+ $("select option:selected").val()
-									+ "&keyword=" + $('#keywordInput').val();
+                     self.location = "board_list"
+                           + '${pageMaker.makeQuery(1)}'
+                           + "&searchType="
+                           + $("select option:selected").val()
+                           + "&keyword=" + $('#keywordInput').val();
 
-						});
+                  });
 
-				$('#newBtn').on("click", function(evt) {
+            $('#newBtn').on("click", function(evt) {
 
-					self.location = "board_write";
+               self.location = "board_write";
 
-				});
+            });
 
-			});
+         });
 </script>
 </body>
 

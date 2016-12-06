@@ -52,7 +52,8 @@
 			               member_id, 
 			               member_name, 
 			               member_phone, 
-			               member_regdate
+			               member_regdate,
+			               member_profile_image
 			        FROM   member
 			        ORDER  BY member_num DESC) 
 			WHERE  page = #{perPageNum} 
@@ -68,12 +69,14 @@
 			               member_id, 
 			               member_name, 
 			               member_phone, 
-			               member_regdate
+			               member_regdate,
+			               member_profile_image
 		              FROM   (SELECT   member_num, 
 						               member_id, 
 						               member_name, 
 						               member_phone, 
-						               member_regdate
+						               member_regdate,
+						               member_profile_image
 		                      FROM   member 
 		                      ORDER BY member_num DESC,
 		                               member_regdate DESC)) 
@@ -124,18 +127,21 @@
 		               member_id, 
 		               member_name, 
 		               member_phone, 
-		               member_regdate
+		               member_regdate,
+		               member_profile_image
 		      FROM   (SELECT CEIL(rownum / #{perPageNum}) request_page, 
 			                   member_num, 
 				               member_id, 
 				               member_name, 
 				               member_phone, 
-				               member_regdate
+				               member_regdate,
+				               member_profile_image
 		              FROM   (SELECT   member_num, 
 						               member_id, 
 						               member_name, 
 						               member_phone, 
-						               member_regdate
+						               member_regdate,
+						               member_profile_image
 		                      FROM   member
 		                      <include refid="search" />
 		                      ORDER BY member_num DESC,

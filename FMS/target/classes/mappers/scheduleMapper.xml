@@ -25,7 +25,7 @@
 	</insert>
 	
 	<!-- 일정 수정 -->
-	<update id="update">
+	<update id="update" parameterType="com.cz.fms.schedule.domain.Schedule">
 		UPDATE SCHEDULE
 		SET schedule_title = #{schedule_title},
 			schedule_content = #{schedule_content},

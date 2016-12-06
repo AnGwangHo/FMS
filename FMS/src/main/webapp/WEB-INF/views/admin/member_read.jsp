@@ -86,9 +86,17 @@
 
 			<!-- 사진 -->
 			<li style="list-style: none; float:left; margin-left: 50px; margin-right: 50px;">
-				<img id="imagePreview" name="imagePreview" src="/html/images/test_image.jpg" style="width: 250px; height: 250px; border: 8px solid black;" />
-				<!-- <input type="file" id="profile" class="form-control" name="profile"	required style="width: 85%; "> -->
+				<img id="imagePreview" name="imagePreview" style="width: 250px; height: 250px; border: 8px solid black;" 
+				src="http://localhost/memberdisplayFile?fileName=${MemberAdmin.member_profile_image}"/>
+				 <script id="member_profile_image" type="text/x-handlebars-template">
+                         <li data-src='{{member_num}}'>
+                           <div class="mailbox-attachment-info">
+                             <img src="{{getLink}}" class="mailbox-attachment-name">
+                           </div>
+                         </li>
+                 </script>
 			</li>
+			
 			
 			<!-- 한 줄당 li 하나씩 -->
 			<ul style="margin-left: 100px;">

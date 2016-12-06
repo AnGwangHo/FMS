@@ -99,9 +99,7 @@ public class MemberAdminController {
 		logger.info(cri.toString());
 
 		model.addAttribute("memberList", service.listSearchCriteria(cri));
-
 		//logger.info("사이즈 수: " + service.memberListCriteria(cri).size());
-
 		// model.addAttribute("list", service.listAll());
 		PageMakerMember pageMaker = new PageMakerMember();
 		pageMaker.setCri(cri);

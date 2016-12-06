@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>:: Floxi ::</title>
-<meta http-equiv="refresh" content="2; URL=localhost;">
+<meta http-equiv="refresh" content="2; URL=/schedule/listAll;">
 <style type="text/css">
 body {
         background-color: #444;

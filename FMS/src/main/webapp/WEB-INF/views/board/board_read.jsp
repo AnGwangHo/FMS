@@ -95,23 +95,23 @@
         
         <!-- Home -->
         
-       	<!-- FORM : hidden값 처리 -->
-			<form role="form" action="modifyPage" method="post">
-				<input type='hidden' name='bulletin_num' value="${bulletin.bulletin_num}"> 
-				<input type='hidden' name='page' value="${cri.page}"> 
-				<input type='hidden' name='perPageNum' value="${cri.perPageNum}"> 
-				<input type="hidden" name="searchType" value="${cri.searchType }">
-				<input type="hidden" name="keyword" value="${cri.keyword }">
-				<input type='hidden' name='member_num' id="newReplyWriter" value="${sessionScope.login.member_num}">
-				<input type='hidden' name='member_name' value="${member.member_id}">
-			</form>
- 		<!-- FORM 종료 -->
+          <!-- FORM : hidden값 처리 -->
+         <form role="form" action="modifyPage" method="post">
+            <input type='hidden' name='bulletin_num' value="${bulletin.bulletin_num}"> 
+            <input type='hidden' name='page' value="${cri.page}"> 
+            <input type='hidden' name='perPageNum' value="${cri.perPageNum}"> 
+            <input type="hidden" name="searchType" value="${cri.searchType }">
+            <input type="hidden" name="keyword" value="${cri.keyword }">
+            <input type='hidden' name='member_num' id="newReplyWriter" value="${sessionScope.login.member_num}">
+            <input type='hidden' name='member_name' value="${member.member_id}">
+         </form>
+       <!-- FORM 종료 -->
         
         
          
             <div class="table-responsive">
                <div class="col-sm-12">
-              	  <!-- 상세보기 테이블 시작 -->
+                   <!-- 상세보기 테이블 시작 -->
                   <table class="table table-bordered ">
                      <tr>
                         <td class="active">글제목</td>
@@ -128,27 +128,27 @@
                      <tr>
                         <td class="active">첨부파일</td>
                         <td>
-                      	<!-- 첨부파일 다운로드 링크 보여줄 곳 -->
-							<ul class="mailbox-attachments clearfix uploadedList">
-							</ul> 
-							<!-- 첨부파일 스크립트 처리 --> 
-	 				        <script id="templateAttach"	type="text/x-handlebars-template">
+                         <!-- 첨부파일 다운로드 링크 보여줄 곳 -->
+                     <ul class="mailbox-attachments clearfix uploadedList">
+                     </ul> 
+                     <!-- 첨부파일 스크립트 처리 --> 
+                        <script id="templateAttach"   type="text/x-handlebars-template">
                               <li data-src='{{bulletin_num}}'>
-					            <div class="mailbox-attachment-info">
-					   	        <h5><a href="{{getLink}}" class="mailbox-attachment-name">${bulletin.bulletin_attachment }</a></h5>
-					            </div>
-					          </li>
-                        	</script>
+                           <div class="mailbox-attachment-info">
+                             <h5><a href="{{getLink}}" class="mailbox-attachment-name">${bulletin.bulletin_attachment }</a></h5>
+                           </div>
+                         </li>
+                           </script>
                         </td>
                         <td class="active">조회수</td>
                         <td><label style="color: white">${bulletin.bulletin_hitcount }</label></td>
                      </tr>
    
                     <tr>
-						<td colspan="4"><pre>${bulletin.bulletin_content }</pre></td>
-					</tr>
+                  <td colspan="4"><pre>${bulletin.bulletin_content }</pre></td>
+               </tr>
                   </table>
-						<!-- 상세보기 테이블 종료 -->
+                  <!-- 상세보기 테이블 종료 -->
                </div>
       
             </div>
@@ -167,68 +167,68 @@
         
 <script>
 $(document).ready(function(){
-	
-	var formObj = $("form[role='form']");
-	
-	/* -------------------------------------------------------파일첨부 스크립트--------------------------------------------------------- */
-	var bno = ${bulletin.bulletin_num};
-	var template = Handlebars.compile($("#templateAttach").html());
-	
-	$.getJSON("/board/getAttach/"+bno,function(list){
-		$(list).each(function(){
-			var fileInfo = getFileInfo(this);             
-			var html = template(fileInfo);
-			 $(".uploadedList").append(html);
-		});
-	});
+   
+   var formObj = $("form[role='form']");
+   
+   /* -------------------------------------------------------파일첨부 스크립트--------------------------------------------------------- */
+   var bno = ${bulletin.bulletin_num};
+   var template = Handlebars.compile($("#templateAttach").html());
+   
+   $.getJSON("/board/getAttach/"+bno,function(list){
+      $(list).each(function(){
+         var fileInfo = getFileInfo(this);             
+         var html = template(fileInfo);
+          $(".uploadedList").append(html);
+      });
+   });
 
 $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
-		
-		var fileLink = $(this).attr("href");
-		
-		if(checkImageType(fileLink)){
-			
-			event.preventDefault();
-					
-			var imgTag = $("#popup_img");
-			imgTag.attr("src", fileLink);
-			
-			$(".popup").show('slow');
-			imgTag.addClass("show");		
-		}	
-	});
-	
-	$("#popup_img").on("click", function(){
-		$(".popup").hide('slow');
-	});	
+      
+      var fileLink = $(this).attr("href");
+      
+      if(checkImageType(fileLink)){
+         
+         event.preventDefault();
+               
+         var imgTag = $("#popup_img");
+         imgTag.attr("src", fileLink);
+         
+         $(".popup").show('slow');
+         imgTag.addClass("show");      
+      }   
+   });
+   
+   $("#popup_img").on("click", function(){
+      $(".popup").hide('slow');
+   });   
 });
 </script>
-<!-- 															파일첨부 스크립트 종료																	 -->
+<!--                                              파일첨부 스크립트 종료                                                    -->
         
         
                
 <script>
-	var formObj = $("form[role='form']");
-	
-	console.log(formObj);
-	
-	$(".btn-info").on("click", function(){
-		formObj.attr("method", "get");		
-		formObj.attr("action", "/board/board_list");
-		formObj.submit();
-	});
-	
-	$(".btn-danger").on("click", function(){
-		formObj.attr("action", "/board/removePage");
-		formObj.attr("method","post");
-		formObj.submit();
-	});
-	
-	$(".btn-primary").on("click", function(){
-		formObj.attr("action" , "/board/board_modify");
-		formObj.attr("method","get");
-		formObj.submit();
-	});  
+   var formObj = $("form[role='form']");
+   
+   console.log(formObj);
+   
+   $(".btn-info").on("click", function(){
+      formObj.attr("method", "get");      
+      formObj.attr("action", "/board/board_list");
+      formObj.submit();
+   });
+   
+   $(".btn-danger").on("click", function(){
+      formObj.attr("action", "/board/removePage");
+      formObj.attr("method","post");
+      formObj.submit();
+   });
+   
+   $(".btn-primary").on("click", function(){
+      formObj.attr("action" , "/board/board_modify");
+      formObj.attr("method","get");
+      formObj.submit();
+   });  
 </script>
             
             
@@ -243,7 +243,7 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
                      </div>
                      <div class="box-body">
                         <label for="newReplyWriter" style="color: white">작성자</label> 
-                        <input class="form-control" type="text" id="" style="width: 10%" value="${sessionScope.login.member_id}">
+                        <input class="form-control" type="text" id="" style="width: 10%" value="${sessionScope.login.member_id}" readonly>
                         <label for="exampleInputEmail1" style="color: white; margin-top: 10px;">내용</label> 
                         <input class="form-control" type="text" placeholder="내용을 입력하세요." id="newReplyText" style="width: 50%">
          
@@ -254,7 +254,7 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
                      </div>
                   </div>
          
-         		  <!-- 댓글 목록 , 페이징 처리 -->
+                 <!-- 댓글 목록 , 페이징 처리 -->
                   <!-- The time line -->
                   <ul class="timeline">
                      <!-- timeline time label -->
@@ -262,7 +262,7 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
                            댓글 목록 <small id="replyCountSmall">[${bulletin.reply_count }]</small></span></li>
                      
                   </ul>
-         		  <!--  댓글목록 -->
+                 <!--  댓글목록 -->
                   <div class='text-center' >
                      <ul id="pagination" class="pagination pagination-sm no-margin " >
                      </ul>
@@ -274,21 +274,21 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
             
             <!-- Modal -->
             <div id="modifyModal" class="modal modal-primary" role="dialog">
-            	<div class="modal-dialog">
-            		<!-- modal content -->
-            		<div class="modal-header">
-            			<button type="button" class="close" data-dismiss="modal">&times;</button>
-            			<h4 class="modal-title"></h4>
-            		</div>
-            		<div class="modal-body" data-reply_num>
-            		 <p><input type="text" id="replytext" class="form-control">testbody</p>
-            		</div>
-            		<div class="modal-footer">
-            			<button type="button" class="btn" id="replyModBtn" data-dismiss="modal">수정</button>
-            			<button type="button" class="btn" id="replyDelBtn" data-dismiss="modal">삭제</button>
-            			<button type="button" class="btn" data-dismiss="modal" data-dismiss="modal">닫기</button>
-            		</div>
-            	</div>
+               <div class="modal-dialog">
+                  <!-- modal content -->
+                  <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title"></h4>
+                  </div>
+                  <div class="modal-body" data-reply_num>
+                   <p><input type="text" id="replytext" class="form-control">testbody</p>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn" id="replyModBtn" data-dismiss="modal">수정</button>
+                     <button type="button" class="btn" id="replyDelBtn" data-dismiss="modal">삭제</button>
+                     <button type="button" class="btn" data-dismiss="modal" data-dismiss="modal">닫기</button>
+                  </div>
+               </div>
             </div>
          
 <!-- 댓글 리스트 -->
@@ -305,7 +305,7 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
     <div class="timeline-footer">
      <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal">Modify</a>
     </div>
-  </div>			
+  </div>         
 </li>
 {{/each}}
 </script>
@@ -313,165 +313,165 @@ $(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <!-- 댓글관련 처리 -->
 <script>
-	Handlebars.registerHelper("prettifyDate", function(timeValue) {
-		var dateObj = new Date(timeValue);
-		var year = dateObj.getFullYear();
-		var month = dateObj.getMonth() + 1;
-		var date = dateObj.getDate();
-		
-		return year + "/" + month + "/" + date;
-	});
+   Handlebars.registerHelper("prettifyDate", function(timeValue) {
+      var dateObj = new Date(timeValue);
+      var year = dateObj.getFullYear();
+      var month = dateObj.getMonth() + 1;
+      var date = dateObj.getDate();
+      
+      return year + "/" + month + "/" + date;
+   });
 
-	var printData = function(replyArr, target, templateObject) {
+   var printData = function(replyArr, target, templateObject) {
 
-		var template = Handlebars.compile(templateObject.html());
+      var template = Handlebars.compile(templateObject.html());
 
-		var html = template(replyArr);
-		$(".replyLi").remove();
-		target.after(html);
+      var html = template(replyArr);
+      $(".replyLi").remove();
+      target.after(html);
 
-	}
+   }
 
-	var bulletin_num= ${bulletin.bulletin_num};
-	
-	var replyPage = 1;
-
-	//댓글 페이지
-	function getPage(pageInfo) {
-		$.getJSON(pageInfo, function(data) {
-			printData(data.list, $("#repliesDiv"), $('#template'));
-			printPaging(data.pageMaker, $(".pagination"));
-
-			$("#modifyModal").modal('hide');
-			$("#replyCountSmall").html("[" + data.pageMaker.totalCount + "]");
-
-		});
-	}
-	
-	var printPaging = function(pageMaker, target) {
-
-		var str = "";
-
-		if (pageMaker.prev) {
-			str += "<li><a href='" + (pageMaker.startPage - 1) + "'> << </a></li>";
-		}
-
-		for (var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
-			var strClass = pageMaker.cri.page == i ? 'class=active' : '';
-			str += "<li "+strClass+"><a href='"+i+"'>" + i + "</a></li>";
-		}
-
-		if (pageMaker.next) {
-			str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
-		}
-
-		target.html(str);
-	};
-
-	
-	$("#repliesDiv").on("click", function() {  
+   var bulletin_num= ${bulletin.bulletin_num};
    
-		/*if ($(".timeline li").size() > 1) {
-			return;
-		}*/
-		//1203
-		$(".replyLi").toggle("slow");
-		getPage("/replies/" + bulletin_num + "/1");
-		
-	});
-	
-	$(".pagination").on("click", "li a", function(event){
-		
-		event.preventDefault();
-		
-		replyPage = $(this).attr("href");
-		
-		getPage("/replies/"+bulletin_num+"/"+replyPage);
-		
-	});
+   var replyPage = 1;
 
-	$("#replyAddBtn").on("click",function(){
-		 
-		 var replyerObj = $("#newReplyWriter");
-		 var replytextObj = $("#newReplyText");
-		 var member_num = replyerObj.val();
-		 var reply_content = replytextObj.val();
-		
-		  $.ajax({
-				type:'post',
-				url:'/replies/',
-				headers: { 
-				      "Content-Type": "application/json",
-				      "X-HTTP-Method-Override": "POST" },
-				dataType:'text',
-				data: JSON.stringify({bulletin_num:bulletin_num, member_num:member_num, reply_content:reply_content}),
-				success:function(result){
-					console.log("result: " + result);
-					if(result == 'SUCCESS'){
-						alert("등록 되었습니다.");
-						replyPage = 1;
-						getPage("/replies/"+bulletin_num+"/"+replyPage );
-						replyerObj.val("");   //replyer -> member_num
-						replytextObj.val("");   //replytext -> reply_content
-					}
-			}});
-	});
+   //댓글 페이지
+   function getPage(pageInfo) {
+      $.getJSON(pageInfo, function(data) {
+         printData(data.list, $("#repliesDiv"), $('#template'));
+         printPaging(data.pageMaker, $(".pagination"));
 
-	$(".timeline").on("click", ".replyLi", function(event){
-		
-		var reply = $(this);
-		
-		$("#replytext").val(reply.find('.timeline-body').text());
-		$(".modal-title").html(reply.attr("data-reply_num"));
-		
-	});
-	
-	//댓글 수정처리
-	$("#replyModBtn").on("click",function(){
-		  
-		  var reply_num = $(".modal-title").html();
-		  var reply_content = $("#replytext").val();
-		  
-		  $.ajax({
-				type:'put',
-				url:'/replies/'+reply_num,
-				headers: { 
-				      "Content-Type": "application/json",
-				      "X-HTTP-Method-Override": "PUT" },
-				data:JSON.stringify({reply_content:reply_content}), 
-				dataType:'text', 
-				success:function(result){
-					console.log("result: " + result);
-					if(result == 'SUCCESS'){
-						alert("수정 되었습니다.");
-						getPage("/replies/"+bulletin_num+"/"+replyPage );
-					}
-			}});
-	});
-	
-	//댓글 삭제처리
-	$("#replyDelBtn").on("click",function(){
-		  
-		  var reply_num = $(".modal-title").html();
-		  var reply_content = $("#replytext").val();
-		  
-		  $.ajax({
-				type:'delete',
-				url:'/replies/'+reply_num,
-				headers: { 
-				      "Content-Type": "application/json",
-				      "X-HTTP-Method-Override": "DELETE" },
-				dataType:'text', 
-				success:function(result){
-					console.log("result: " + result);
-					if(result == 'SUCCESS'){
-						alert("삭제 되었습니다.");
-						getPage("/replies/"+bulletin_num+"/"+replyPage );
-						
-					}
-			}});
-	});
-	
+         $("#modifyModal").modal('hide');
+         $("#replyCountSmall").html("[" + data.pageMaker.totalCount + "]");
+
+      });
+   }
+   
+   var printPaging = function(pageMaker, target) {
+
+      var str = "";
+
+      if (pageMaker.prev) {
+         str += "<li><a href='" + (pageMaker.startPage - 1) + "'> << </a></li>";
+      }
+
+      for (var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+         var strClass = pageMaker.cri.page == i ? 'class=active' : '';
+         str += "<li "+strClass+"><a href='"+i+"'>" + i + "</a></li>";
+      }
+
+      if (pageMaker.next) {
+         str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
+      }
+
+      target.html(str);
+   };
+
+   
+   $("#repliesDiv").on("click", function() {  
+   
+      /*if ($(".timeline li").size() > 1) {
+         return;
+      }*/
+      //1203
+      $(".replyLi").toggle("slow");
+      getPage("/replies/" + bulletin_num + "/1");
+      
+   });
+   
+   $(".pagination").on("click", "li a", function(event){
+      
+      event.preventDefault();
+      
+      replyPage = $(this).attr("href");
+      
+      getPage("/replies/"+bulletin_num+"/"+replyPage);
+      
+   });
+
+   $("#replyAddBtn").on("click",function(){
+       
+       var replyerObj = $("#newReplyWriter");
+       var replytextObj = $("#newReplyText");
+       var member_num = replyerObj.val();
+       var reply_content = replytextObj.val();
+      
+        $.ajax({
+            type:'post',
+            url:'/replies/',
+            headers: { 
+                  "Content-Type": "application/json",
+                  "X-HTTP-Method-Override": "POST" },
+            dataType:'text',
+            data: JSON.stringify({bulletin_num:bulletin_num, member_num:member_num, reply_content:reply_content}),
+            success:function(result){
+               console.log("result: " + result);
+               if(result == 'SUCCESS'){
+                  alert("등록 되었습니다.");
+                  replyPage = 1;
+                  getPage("/replies/"+bulletin_num+"/"+replyPage );
+                  replyerObj.val("");   //replyer -> member_num
+                  replytextObj.val("");   //replytext -> reply_content
+               }
+         }});
+   });
+
+   $(".timeline").on("click", ".replyLi", function(event){
+      
+      var reply = $(this);
+      
+      $("#replytext").val(reply.find('.timeline-body').text());
+      $(".modal-title").html(reply.attr("data-reply_num"));
+      
+   });
+   
+   //댓글 수정처리
+   $("#replyModBtn").on("click",function(){
+        
+        var reply_num = $(".modal-title").html();
+        var reply_content = $("#replytext").val();
+        
+        $.ajax({
+            type:'put',
+            url:'/replies/'+reply_num,
+            headers: { 
+                  "Content-Type": "application/json",
+                  "X-HTTP-Method-Override": "PUT" },
+            data:JSON.stringify({reply_content:reply_content}), 
+            dataType:'text', 
+            success:function(result){
+               console.log("result: " + result);
+               if(result == 'SUCCESS'){
+                  alert("수정 되었습니다.");
+                  getPage("/replies/"+bulletin_num+"/"+replyPage );
+               }
+         }});
+   });
+   
+   //댓글 삭제처리
+   $("#replyDelBtn").on("click",function(){
+        
+        var reply_num = $(".modal-title").html();
+        var reply_content = $("#replytext").val();
+        
+        $.ajax({
+            type:'delete',
+            url:'/replies/'+reply_num,
+            headers: { 
+                  "Content-Type": "application/json",
+                  "X-HTTP-Method-Override": "DELETE" },
+            dataType:'text', 
+            success:function(result){
+               console.log("result: " + result);
+               if(result == 'SUCCESS'){
+                  alert("삭제 되었습니다.");
+                  getPage("/replies/"+bulletin_num+"/"+replyPage );
+                  
+               }
+         }});
+   });
+   
 </script>
         
       </div>
